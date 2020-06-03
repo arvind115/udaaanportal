@@ -2,12 +2,13 @@ from django.shortcuts import render
 from django.views.generic.edit import CreateView, UpdateView
 from django.urls import reverse_lazy
 
-from .models import Branch,CourseDetails
-from .forms import CourseForm
+from .models import Branch,CourseDetails,GLAMember
+from .forms import CourseForm,GLAMemberForm
+
 # Create your views here.
 def homeview(request,*args,**kwargs):
   return render(request,'exp.htm',{
-    'form':CourseForm,
+    'form':GLAMemberForm,
   })
 
 def load_branches(request,*args,**kwargs):
@@ -26,3 +27,10 @@ class CourseCreateView(CreateView):
     form_class = CourseForm
     template_name = 'exp.htm'
     success_url = reverse_lazy('created')
+
+class MemberCreateView(CreateView):
+  model = GLAMember
+  form_class = GLAMemberForm
+  template_name = 'member_create.htm'
+  success_url = reverse_lazy('member_created')
+

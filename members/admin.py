@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Course,Branch,CourseDetails
+from .models import Course,Branch,CourseDetails,GLAMember
 
 class CourseAdmin(admin.ModelAdmin):
   list_display = ['course','duration']
@@ -16,3 +16,4 @@ class BranchAdmin(admin.ModelAdmin):
 admin.site.register(Course,CourseAdmin)
 admin.site.register(Branch,BranchAdmin)
 admin.site.register(CourseDetails)
+admin.site.register(GLAMember)

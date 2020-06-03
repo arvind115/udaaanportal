@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import CourseDetails,Branch
+from .models import CourseDetails,Branch,GLAMember
 
 class CourseForm(forms.ModelForm):
   class Meta:
@@ -19,4 +19,22 @@ class CourseForm(forms.ModelForm):
                   pass  # invalid input from the client; ignore and fallback to empty branch queryset
         elif self.instance.pk:
             self.fields['branch'].queryset = self.instance.course.branch_set.order_by('branch')
-
+        
+class GLAMemberForm(forms.ModelForm):
+  DAYS=(
+    ('Monday','Monday'),
+    ('Tuesday','Tuesday'),
+    ('Wednesday','Wednesday'),
+    ('Thursday','Thursday'),
+    ('Friday','Friday'),
+    ('Saturday','Saturday'),
+    ('Sunday','Sunday')
+  )
+  preferred_days =  forms.MultipleChoiceField(
+        required=True,
+        widget=forms.CheckboxSelectMultiple,
+        choices=DAYS,
+    )
+  class Meta:
+   model = GLAMember
+   fields = ['name','gender','dob','email','phone','state','city','joined','working_days','preferred_days']

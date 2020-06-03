@@ -1,12 +1,7 @@
-<html>
-  <head>
-    <title>
-      Ajax playground
-    </title>
-  </head>
-  <body>
-  {{ branches }}
-  <h2>Course Form</h2>
+{% extends 'base.htm' %}
+
+{% block content %}
+<h2>Course Form</h2>
   <form id="courseForm" method="post" data-branches-url="{% url 'ajax_load_branches' %}" novalidate>
     {% csrf_token %}
     <table>
@@ -39,5 +34,4 @@
     });
   </script>
 
-  </body>
-</html>
+{% endblock content %}
