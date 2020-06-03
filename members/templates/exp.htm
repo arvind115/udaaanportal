@@ -1,0 +1,43 @@
+<html>
+  <head>
+    <title>
+      Ajax playground
+    </title>
+  </head>
+  <body>
+  {{ branches }}
+  <h2>Course Form</h2>
+  <form id="courseForm" method="post" data-branches-url="{% url 'ajax_load_branches' %}" novalidate>
+    {% csrf_token %}
+    <table>
+      {{ form.as_table }}
+    </table>
+    <button type="submit">Save</button>
+  </form>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script>
+    $("#id_course").change(function () {
+      var url = $("#courseForm").attr("data-branches-url");  // get the url of the `load_branches` view
+      var courseId = $(this).val();  // get the selected course ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-branches/)
+        data: {
+          'course': courseId       // add the course id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_branches` view function
+          console.log('AJAX call successful..');
+          console.log(data);
+          $("#id_branch").html(data);  // replace the contents of the branch input with the data that came from the server
+        },
+        error: function(err){
+          console.log('AJAX request failed..');
+        }
+      });
+
+    });
+  </script>
+
+  </body>
+</html>

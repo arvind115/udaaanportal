@@ -16,6 +16,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from .views import home
+from members.views import homeview,CourseCreateView,createdview, load_branches
+
 urlpatterns = [
+    # path('',homeview),
+    path('form',CourseCreateView.as_view(),name='create_course'),
+    path('form/created',createdview,name='created'),
+    path('doesnotmatter', load_branches, name='ajax_load_branches'),
+
+
     path('admin/', admin.site.urls),
 ]
