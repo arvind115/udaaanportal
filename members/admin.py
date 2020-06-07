@@ -1,19 +1,33 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Course,Branch,CourseDetails,GLAMember
+from .models import Course,Branch,GLAMember,State,City
 
 class CourseAdmin(admin.ModelAdmin):
   list_display = ['course','duration']
   class Meta:
     model = Course
 
+admin.site.register(Course,CourseAdmin)
+
 class BranchAdmin(admin.ModelAdmin):
   list_display = ['branch','course']
   class Meta:
     model = Branch
 
-admin.site.register(Course,CourseAdmin)
 admin.site.register(Branch,BranchAdmin)
-admin.site.register(CourseDetails)
-admin.site.register(GLAMember)
+
+class GLAMemberAdmin(admin.ModelAdmin):
+  list_display = ['username','name','joined_in','pk',]
+  class Meta:
+    model = GLAMember
+
+admin.site.register(State)
+
+class CityAdmin(admin.ModelAdmin):
+  list_display = ['city','state']
+  class Meta:
+    model = City
+admin.site.register(City,CityAdmin)
+
+admin.site.register(GLAMember,GLAMemberAdmin)

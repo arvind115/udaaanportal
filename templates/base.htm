@@ -1,11 +1,32 @@
+{% load static %}
 <html>
 <head>
 <title>Udaaan Portal</title>
+<link rel='stylesheet' href='{% static "css/bootstrap.min.css" %}'>
+<script src='{% static "js/jquery.min.js" %}'></script>
+<script src='{% static "js/popper.min.js" %}'></script>
+<script src='{% static "js/bootstrap.min.js" %}'></script>
+<!-- <link rel='stylesheet' href="{% static 'css/style.css' %}"> -->
 </head>
 <body>
-  <h1>Udaaan Portal </h1>
+  <div class="container-fluid">
+    <div class="row no-gutters">
+      <div class="col-12">
+        <h1>Udaaan Portal </h1>
+    {% if request.user.is_authenticated %}
+      <b>Hey <p id='user'>{{ request.user }}</p></b>
+      <a href="{% url 'createmember' %}">Create profile</a>
+      <form method='POST' action='{% url "logout" %}'>{% csrf_token %}
+        <button type="submit">Log out</button>
+      </form>
+    {% else %}
+      <a href="{% url 'login' %}">Login</a>
+    {% endif %}
+      </div>
+    </div>
   {% block content %}
   {% endblock content %}
+  </div>
 </body>
 </html>
 

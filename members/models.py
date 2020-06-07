@@ -2,12 +2,28 @@ from django.db import models
 from django.core.validators import RegexValidator
 
 # Create your models here.
+class State(models.Model):
+  state = models.CharField(null=True,blank=True,max_length=50)
+
+  def __str__(self):
+    return self.state
+  
+  class Meta:
+    verbose_name = 'State'
+    verbose_name_plural = 'States'
+
+class City(models.Model):
+  city  = models.CharField(max_length=50,blank=True,unique=True)
+  state = models.ForeignKey(State,null=True,blank=True, on_delete=models.CASCADE)
+
+  def __str__(self):
+    return self.city
+
+  class Meta:
+    verbose_name = 'City'
+    verbose_name_plural = 'Cities'
 
 class Course(models.Model):
-  class Meta:
-    verbose_name = 'Course'
-    verbose_name_plural = 'Courses'
-
   course_choices = (
     ('btech','B.Tech'),
     ('mtech','M.Tech'),
@@ -34,6 +50,10 @@ class Course(models.Model):
                 unique=True)
   duration = models.IntegerField(null=True,choices=duration_choices)
 
+  class Meta:
+    verbose_name = 'Course'
+    verbose_name_plural = 'Courses'
+
   def __str__(self):
       return self.course
 
@@ -49,19 +69,10 @@ class Branch(models.Model):
 
   def __str__(self):
       return self.branch
-
-class CourseDetails(models.Model):
-  YEARS = (
-    (1,1),(2,2),(3,3),(4,4)
-  )
-  class Meta:
-    verbose_name = 'Course Detail'
-    verbose_name_plural = 'Course Details'
-  course = models.ForeignKey(Course, on_delete=models.CASCADE,null=True)
-  branch = models.ForeignKey(Branch, on_delete=models.CASCADE,null=True)
-  year   = models.IntegerField(null=True,default=1,choices=YEARS)
-  rollno = models.IntegerField(null=True)
   
+def store_file_name(instance,filename):
+  return '{0}.{1}'.format(instance.username,filename.split('.')[-1])
+
 class GLAMember(models.Model):
   class Meta:
     verbose_name = 'GLA Member'
@@ -71,15 +82,34 @@ class GLAMember(models.Model):
     ('Female','Female'),
     ('Other','Other')
   )
-  name      = models.CharField(max_length=50,blank=True,null=True)
-  gender    = models.CharField(max_length=8,blank=True,null=True,choices=gender_choices)
-  dob       = models.DateField(null=True,blank=True,auto_now=False, auto_now_add=False)
-  email     = models.EmailField(max_length=50,null=True,blank=True)
-  phone_regex = RegexValidator(regex=r'^\+?1?\d{9,12}$', 
-            message="Phone number must be entered in the format: '+999999999999'. Up to 12 digits allowed.")
+  DAYS=(
+    ('Monday','Monday'),
+    ('Tuesday','Tuesday'),
+    ('Wednesday','Wednesday'),
+    ('Thursday','Thursday'),
+    ('Friday','Friday'),
+    ('Saturday','Saturday'),
+    ('Sunday','Sunday')
+  )
+
+  username  = models.CharField(max_length=50,blank=True,null=True)
+  name      = models.CharField(max_length=50,null=True)
+  gender    = models.CharField(max_length=8,choices=gender_choices,null=True)
+  dob       = models.DateField(null=True,auto_now=False, auto_now_add=False)
+  email     = models.EmailField(max_length=50,null=True)
+  phone_regex = RegexValidator(regex=r'^\+?1?\d{9,10}$', 
+            message="Phone number must be entered in the format: '+91xxxxxxxxxx'. Up to 12 digits allowed.")
   phone = models.CharField(validators=[phone_regex], max_length=17, blank=True) # validators should be a list
-  state = models.CharField(max_length=30,blank=True,null=True)
-  city = models.CharField(max_length=50,blank=True,null=True)
-  joined = models.DateField(blank=True,null=True,auto_now=False, auto_now_add=False)
+  state = models.ForeignKey(State,null=True, on_delete=models.CASCADE)
+  city = models.ForeignKey(City,null=True, on_delete=models.CASCADE)
+  course = models.ForeignKey(Course,null=True, on_delete=models.CASCADE)
+  branch  = models.ForeignKey(Branch,null=True, on_delete=models.CASCADE)
+  year = models.IntegerField(null=True,choices=((1,1),(2,2),(3,3),(4,4)))
+  rollno = models.IntegerField(null=True,default=0)
+  joined_in = models.DateField(blank=True,null=True,auto_now=False, auto_now_add=False)
   working_days = models.IntegerField(default=0,null=True,blank=True)
-  photo = models.ImageField(upload_to=None, height_field=None, width_field=None, max_length=None,null=True)
+  # preferred_days = models.CharField(max_length=15,null=True,choices=DAYS)
+  photo = models.FileField(upload_to=store_file_name,null=True)
+
+  def __str__(self):
+    return self.username
