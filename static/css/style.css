@@ -1,0 +1,23 @@
+.form-row{
+  margin-bottom: 15px;
+}
+lable{
+  color: grey;
+  font-size: 14px;
+  font-weight: bold;
+}
+input{
+  padding:0px;
+  margin:0px;
+  border:none;
+  border-bottom: 1px solid grey;
+}
+/* input:active{
+  /* border:none; 
+  border-bottom: 2px solid blue;
+} */
+input:focus{
+  outline: none !important;
+  border-bottom: 1px solid black;
+}
+

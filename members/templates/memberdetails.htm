@@ -1,0 +1,12 @@
+{% extends 'base.htm' %}
+{% block content %}
+  <p><h2>GLA Member details</h2></p>
+  <p><b>Username: </b>{{ glamember.username }}</p>
+  <p><b>Name: </b>{{ glamember.name }}</p>
+  <p><b>City: </b>{{ glamember.city }}</p>
+  <p><b>DOB: </b>{{ glamember.dob }}</p>
+  <p><b></b>{{ glamember. }}</p>
+  <p><b>Preferred working days:</b>{{ glamember.preferred_days.all }}</p>
+  <!-- <img src={{ glamember.photo.url }} /> -->
+
+{% endblock content %}

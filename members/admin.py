@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Course,Branch,GLAMember,State,City
+from .models import Course,Branch,GLAMember,State,City,Day
 
 class CourseAdmin(admin.ModelAdmin):
   list_display = ['course','duration']
@@ -22,7 +22,7 @@ class GLAMemberAdmin(admin.ModelAdmin):
   class Meta:
     model = GLAMember
 
-admin.site.register(State)
+admin.site.register(GLAMember,GLAMemberAdmin)
 
 class CityAdmin(admin.ModelAdmin):
   list_display = ['city','state']
@@ -30,4 +30,6 @@ class CityAdmin(admin.ModelAdmin):
     model = City
 admin.site.register(City,CityAdmin)
 
-admin.site.register(GLAMember,GLAMemberAdmin)
+admin.site.register(State)
+
+admin.site.register(Day)

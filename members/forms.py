@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Branch,GLAMember,City
+from .models import Branch,GLAMember,City,Day
 
 class DateInputWidget(forms.DateInput):
   input_type = 'date'
@@ -14,15 +14,15 @@ class GLAMemberForm(forms.ModelForm):
     ('Thursday','Thursday'),
     ('Friday','Friday'),
     ('Saturday','Saturday'),
-    ('Sunday','Sunday')
+    ('Sunday','Sunday'),
   )
-  preferred_days =  forms.MultipleChoiceField(
-        required=True,
-        widget=forms.CheckboxSelectMultiple,
-        choices=DAYS,
-  )
-  # dob = forms.DateField(widget=DateInputWidget())
-  # joined_in = forms.DateField(widget=DateInputWidget())
+  # preferred_days =  forms.ModelMultipleChoiceField(
+  #       required=True,
+  #       widget=forms.CheckboxSelectMultiple,
+  #       queryset = Day.objects.all()
+  # )
+  dob = forms.DateField(widget=DateInputWidget())
+  joined_in = forms.DateField(widget=DateInputWidget())
 
   class Meta:
    model = GLAMember

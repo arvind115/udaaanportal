@@ -58,9 +58,6 @@ class Course(models.Model):
       return self.course
 
 class Branch(models.Model):
-  class Meta:
-    verbose_name = 'Branch'
-    verbose_name_plural = 'Branches'
   branch = models.CharField(
            max_length=50,
            blank=False,
@@ -70,29 +67,49 @@ class Branch(models.Model):
   def __str__(self):
       return self.branch
   
-def store_file_name(instance,filename):
-  return '{0}.{1}'.format(instance.username,filename.split('.')[-1])
-
-class GLAMember(models.Model):
   class Meta:
-    verbose_name = 'GLA Member'
-    verbose_name_plural = 'GLA Member'
-  gender_choices = (
-    ('Male','Male'),
-    ('Female','Female'),
-    ('Other','Other')
-  )
-  DAYS=(
+    verbose_name = 'Branch'
+    verbose_name_plural = 'Branches'
+
+class Day(models.Model):
+  DAYS_CHOICES = (
     ('Monday','Monday'),
     ('Tuesday','Tuesday'),
     ('Wednesday','Wednesday'),
     ('Thursday','Thursday'),
     ('Friday','Friday'),
     ('Saturday','Saturday'),
-    ('Sunday','Sunday')
+    ('Sunday','Sunday'),
   )
+  day = models.CharField(max_length=15,null=True,choices=DAYS_CHOICES)
 
-  username  = models.CharField(max_length=50,blank=True,null=True)
+  def __str__(self):
+    return self.day
+  
+  class Meta:
+    verbose_name = 'Day'
+    verbose_name_plural = 'Days'
+  
+def store_file_name(instance,filename):
+  return '{0}.{1}'.format(instance.username,filename.split('.')[-1])
+
+class GLAMember(models.Model):
+  gender_choices = (
+    ('Male','Male'),
+    ('Female','Female'),
+    ('Other','Other')
+  )
+  # DAYS = (
+  #   ('Monday','Monday'),
+  #   ('Tuesday','Tuesday'),
+  #   ('Wednesday','Wednesday'),
+  #   ('Thursday','Thursday'),
+  #   ('Friday','Friday'),
+  #   ('Saturday','Saturday'),
+  #   ('Sunday','Sunday'),
+  # )
+
+  username  = models.CharField(max_length=50,null=True)
   name      = models.CharField(max_length=50,null=True)
   gender    = models.CharField(max_length=8,choices=gender_choices,null=True)
   dob       = models.DateField(null=True,auto_now=False, auto_now_add=False)
@@ -108,8 +125,12 @@ class GLAMember(models.Model):
   rollno = models.IntegerField(null=True,default=0)
   joined_in = models.DateField(blank=True,null=True,auto_now=False, auto_now_add=False)
   working_days = models.IntegerField(default=0,null=True,blank=True)
-  # preferred_days = models.CharField(max_length=15,null=True,choices=DAYS)
+  preferred_days = models.ManyToManyField(Day)
   photo = models.FileField(upload_to=store_file_name,null=True)
 
   def __str__(self):
     return self.username
+
+  class Meta:
+    verbose_name = 'GLA Member'
+    verbose_name_plural = 'GLA Members'

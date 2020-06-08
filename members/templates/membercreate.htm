@@ -1,0 +1,128 @@
+{% extends 'base.htm' %}
+{% block content %}
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
+    {% endfor %}
+</ul>
+{% endif %}
+<div class="row no-gutters" style="background: none;">
+  <div class="col-md-8 offset-md-2 col-sm-12" style="background: none;">
+    <form method="POST" enctype="multipart/form-data" data-branches-url="{% url 'ajax_load_branches' %}" class="form-control-sm">{% csrf_token %}
+        <div class="form-row">
+          <div class="col-2">{{ form.username.label }}</div>
+          <div class="col-4">{{ form.username }}</div>
+          <div class="col-2">{{ form.name.label }}</div>
+          <div class="col-4">{{ form.name }}</div>
+        </div>
+        <div class="form-row">
+          <div class="col-2">{{ form.gender.label }}</div>
+          <div class="col-4">{{ form.gender }}</div>
+          <div class="col-2">{{ form.email.label }}</div>
+          <div class="col-4">{{ form.email }}</div>
+        </div>
+        <div class="form-row">
+          <div class="col-2">{{ form.dob.label }}</div>
+          <div class="col-4">{{ form.dob }}</div>
+          <div class="col-2">{{ form.phone.label }}</div>
+          <div class="col-4">{{ form.phone }}</div>
+        </div>
+        <div class="form-row">
+          <div class="col-2">{{ form.state.label }}</div>
+          <div class="col-4">{{ form.state }}</div>
+          <div class="col-2">{{ form.city.label }}</div>
+          <div class="col-4">{{ form.city }}</div>
+        </div>
+        <div class="form-row">
+          <div class="col-2">{{ form.course.label }}</div>
+          <div class="col-4">{{ form.course }}</div>
+          <div class="col-2">{{ form.branch.label }}</div>
+          <div class="col-4">{{ form.branch }}</div>
+        </div>
+        <div class="form-row">
+          <div class="col-2">{{ form.year.label }}</div>
+          <div class="col-4">{{ form.year }}</div>
+          <div class="col-2">{{ form.rollno.label }}</div>
+          <div class="col-4">{{ form.rollno }}</div>
+        </div>
+        <div class="form-row">
+          <div class="col-2">{{ form.joined_in.label }}</div>
+          <div class="col-4">{{ form.joined_in }}</div>
+          <div class="col-2">{{ form.working_days.label }}</div>
+          <div class="col-4">{{ form.working_days }}</div>
+        </div>
+        <div class="form-row">
+          <div class="col-2">{{ form.preferred_days.label }}</div>
+          <div class="col-4">{{ form.preferred_days }}</div>
+          <div class="col-2">{{ form.photo.label }}</div>
+          <div class="col-4">{{ form.photo }}</div>
+        </div>
+        <div class="form-row">
+          <div class="col-2">{{ form.preferred_days.label }}</div>
+          <div class="col-10">
+              <!-- <select id="days-select" multiple>
+                  
+                    {% for day in form.preferred_days %}
+                    <input type="checkbox">{{ day }}</input>
+                    {% endfor %}
+                  </option> 
+              </select> -->
+          </div>
+        </div>
+      <button type="submit" class="btn btn-success">Create Profile</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  $("#id_course").change(function () {
+    var url = $("#courseForm").attr("data-branches-url");  // get the url of the `load_branches` view
+    var courseId = $(this).val();  // get the selected course ID from the HTML input
+
+    $.ajax({                       // initialize an AJAX request
+      url: 'doesnotmatter',       // set the url of the request (= localhost:8000/doesnotmatter/)
+      data: {
+        'course': courseId       // add the course id to the GET parameters
+      },
+      success: function (data) {   // `data` is the return of the `load_branches` view function
+        // console.log('AJAX call successful..');
+        // console.log('data=',data);
+        $("#id_branch").html(data);  // replace the contents of the branch input with the data that came from the server
+      },
+      error: function(err){
+        console.log('AJAX request failed..');
+      }
+    });
+
+  });
+</script>
+<script>
+  $("#id_state").change(function () {
+    var stateId = $(this).val();  // get the selected state ID from the HTML input
+    $.ajax({                       // initialize an AJAX request
+      url: 'doesnotmatter2',       // set the url of the request (= localhost:8000/doesnotmatter2/)
+      data: {
+        'state': stateId       // add the state id to the GET parameters
+      },
+      success: function (data) {   // `data` is the return of the `load_state` view function
+        console.log('AJAX call successful..');
+        console.log('data=',data);
+        $("#id_city").html(data);  // replace the contents of the branch input with the data that came from the server
+      },
+      error: function(err){
+        console.log('AJAX request failed..');
+      }
+    });
+
+  });
+</script>
+<script>
+  $(document).ready(function() {
+    var username = document.getElementById('user').innerHTML;
+    $('#id_username').val(username);
+    $('#id_username').prop('readonly', true);
+  });
+</script>
+
+{% endblock %}
