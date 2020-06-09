@@ -15,18 +15,81 @@
         <h1>Udaaan Portal </h1>
     {% if request.user.is_authenticated %}
       <b>Hey <p id='user'>{{ request.user }}</p></b>
-      <a href="{% url 'createmember' %}">Create profile</a>
+      <a href="{% url 'membercreate' %}" class="btn btn-primary">Create profile</a>
       <form method='POST' action='{% url "logout" %}'>{% csrf_token %}
-        <button type="submit">Log out</button>
+        <button type="submit" class="btn btn-dark">Log out</button>
       </form>
     {% else %}
-      <a href="{% url 'login' %}">Login</a>
+      <a href="{% url 'login' %}" class="btn btn-success">Login</a>
     {% endif %}
       </div>
     </div>
   {% block content %}
   {% endblock content %}
   </div>
+
+  <script>
+    $("#id_course").change(function () {
+      var courseId = $(this).val();  // get the selected course ID from the HTML input
+  
+      $.ajax({                       // initialize an AJAX request
+        url: '../doesnotmatter',       // set the url of the request (= localhost:8000/doesnotmatter/)
+        data: {
+          'course': courseId       // add the course id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_branches` view function
+          // console.log('AJAX call successful..');
+          // console.log('data=',data);
+          $("#id_branch").html(data);  // replace the contents of the branch input with the data that came from the server
+        },
+        error: function(err){
+          console.log('AJAX request failed..');
+          console.log(err);
+        }
+      });
+  
+    });
+  </script>
+  <script>
+    $("#id_state").change(function () {
+      var stateId = $(this).val();  // get the selected state ID from the HTML input
+      $.ajax({                       // initialize an AJAX request
+        url: '../doesnotmatter2',       // set the url of the request (= localhost:8000/doesnotmatter2/)
+        data: {
+          'state': stateId       // add the state id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_state` view function
+          console.log('AJAX call successful..');
+          console.log('data=',data);
+          $("#id_city").html(data);  // replace the contents of the branch input with the data that came from the server
+        },
+        error: function(err){
+          console.log('AJAX request failed..');
+          console.log(err);
+        }
+      });
+  
+    });
+  </script>
+  <script>
+    $(document).ready(function() {
+      var username = document.getElementById('user').innerHTML;
+      $('#id_username').val(username);
+      $('#id_username').prop('readonly', true);
+    });
+  </script>
+  <script>
+    // $(document).ready(function() {
+    const url = $(location).attr('pathname');
+    console.log('url = ',url);
+    if( url.includes('/memberupdate') ){
+      console.log('on update page');
+      $('#posup').html('Update Profile');
+      $('#posup').removeClass('btn-success');
+      $('#posup').addClass('btn-primary');
+    }
+    // }
+  </script>
 </body>
 </html>
 

@@ -6,12 +6,12 @@ lable{
   font-size: 14px;
   font-weight: bold;
 }
-input{
+/* input{
   padding:0px;
   margin:0px;
   border:none;
   border-bottom: 1px solid grey;
-}
+} */
 /* input:active{
   /* border:none; 
   border-bottom: 2px solid blue;
@@ -19,5 +19,9 @@ input{
 input:focus{
   outline: none !important;
   border-bottom: 1px solid black;
+}
+.profile-pic{
+  width:300px !important;
+  height: 300px !important;
 }
 

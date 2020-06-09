@@ -1,0 +1,5 @@
+{% extends 'base.htm' %}
+
+{% block content %}
+<p>Profile for <b>{{ request.user }}</b> already exists. Check it <a href='{{ request.user.glamember.get_absolute_url }}'>here</a></p>
+{% endblock content %}

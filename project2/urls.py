@@ -21,7 +21,7 @@ from django.conf import settings
 from django.contrib.auth.views import LoginView
 
 from .views import home,registerview, logoutview
-from members.views import MemberCreateView, load_branches, load_cities, MemberDetails
+from members.views import MemberCreateView,MemberUpdateView, load_branches, load_cities, MemberDetails
 
 urlpatterns = [
     path('',home,name='home'),
@@ -29,7 +29,8 @@ urlpatterns = [
     path('register',registerview,name='register'),
     path('logout',logoutview,name='logout'),
 
-    path('createmember',MemberCreateView.as_view(),name='createmember'),
+    path('membercreate',MemberCreateView.as_view(),name='membercreate'),
+    path('memberupdate/<slug:slug>',MemberUpdateView.as_view(),name='memberupdate'),
     path('memberdetails/<slug:slug>',MemberDetails.as_view(),name='memberdetails'),
 
     path('doesnotmatter', load_branches, name='ajax_load_branches'),

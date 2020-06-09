@@ -1,5 +1,8 @@
 from django.db import models
+from django.db.models.signals import post_save
 from django.core.validators import RegexValidator
+from django.contrib.auth.models import User
+from django.urls import reverse
 
 # Create your models here.
 class State(models.Model):
@@ -91,7 +94,7 @@ class Day(models.Model):
     verbose_name_plural = 'Days'
   
 def store_file_name(instance,filename):
-  return '{0}.{1}'.format(instance.username,filename.split('.')[-1])
+  return 'avatars/{0}.{1}'.format(instance.username,filename.split('.')[-1])
 
 class GLAMember(models.Model):
   gender_choices = (
@@ -99,24 +102,16 @@ class GLAMember(models.Model):
     ('Female','Female'),
     ('Other','Other')
   )
-  # DAYS = (
-  #   ('Monday','Monday'),
-  #   ('Tuesday','Tuesday'),
-  #   ('Wednesday','Wednesday'),
-  #   ('Thursday','Thursday'),
-  #   ('Friday','Friday'),
-  #   ('Saturday','Saturday'),
-  #   ('Sunday','Sunday'),
-  # )
 
+  user = models.OneToOneField(User, on_delete=models.CASCADE,null=True)
   username  = models.CharField(max_length=50,null=True)
   name      = models.CharField(max_length=50,null=True)
   gender    = models.CharField(max_length=8,choices=gender_choices,null=True)
   dob       = models.DateField(null=True,auto_now=False, auto_now_add=False)
   email     = models.EmailField(max_length=50,null=True)
   phone_regex = RegexValidator(regex=r'^\+?1?\d{9,10}$', 
-            message="Phone number must be entered in the format: '+91xxxxxxxxxx'. Up to 12 digits allowed.")
-  phone = models.CharField(validators=[phone_regex], max_length=17, blank=True) # validators should be a list
+            message="Phone number must be entered in the format: +91xxxxxxxxxx")
+  phone = models.CharField(validators=[phone_regex], max_length=10, blank=True) # validators should be a list
   state = models.ForeignKey(State,null=True, on_delete=models.CASCADE)
   city = models.ForeignKey(City,null=True, on_delete=models.CASCADE)
   course = models.ForeignKey(Course,null=True, on_delete=models.CASCADE)
@@ -131,6 +126,19 @@ class GLAMember(models.Model):
   def __str__(self):
     return self.username
 
+  def get_absolute_url(self):
+      return reverse('memberdetails', kwargs={'slug': self.username})
+  
   class Meta:
     verbose_name = 'GLA Member'
     verbose_name_plural = 'GLA Members'
+
+def save_user(sender, instance, **kwargs):
+    print('\tin save_user()')
+    print('kwargs = ',kwargs)
+    print('user = ',instance.user)
+    print('username = ',instance.username)
+    instance.user = User.objects.filter(username=instance.username).first()
+    instance.save()
+
+# post_save.connect(save_user, sender=GLAMember)

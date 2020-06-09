@@ -1,0 +1,13 @@
+{% extends 'base.htm' %}
+{% load static %}
+
+{% block content %}
+
+<form class="form-control" method="POST" enctype="multipart/form-data">{% csrf_token %}
+  <p>Previous branch : {{ object.branch }}</p>
+  <p>Previous branch : {{ object.course }}</p>
+  {{ form.as_p }}
+  <button type="submit" class="btn btn-success">Update details</button>
+</form>
+
+{% endblock content %}

@@ -6,21 +6,22 @@ class DateInputWidget(forms.DateInput):
   input_type = 'date'
 
 class GLAMemberForm(forms.ModelForm):
-  BIRTH_YEAR_CHOICES = ['1980', '1981', '1982']
-  DAYS=(
-    ('Monday','Monday'),
-    ('Tuesday','Tuesday'),
-    ('Wednesday','Wednesday'),
-    ('Thursday','Thursday'),
-    ('Friday','Friday'),
-    ('Saturday','Saturday'),
-    ('Sunday','Sunday'),
-  )
+  # DAYS=(
+  #   ('Monday','Monday'),
+  #   ('Tuesday','Tuesday'),
+  #   ('Wednesday','Wednesday'),
+  #   ('Thursday','Thursday'),
+  #   ('Friday','Friday'),
+  #   ('Saturday','Saturday'),
+  #   ('Sunday','Sunday'),
+  # )
   # preferred_days =  forms.ModelMultipleChoiceField(
   #       required=True,
   #       widget=forms.CheckboxSelectMultiple,
   #       queryset = Day.objects.all()
   # )
+  city = forms.ModelChoiceField(queryset=City.objects.none())
+  branch = forms.ModelChoiceField(queryset=Branch.objects.none())
   dob = forms.DateField(widget=DateInputWidget())
   joined_in = forms.DateField(widget=DateInputWidget())
 

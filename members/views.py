@@ -1,10 +1,11 @@
 from django.http import HttpResponse,HttpResponseRedirect
-from django.shortcuts import render,redirect, get_object_or_404
+from django.shortcuts import render,redirect
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.detail import DetailView
 from django.urls import reverse_lazy,reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
+from django.contrib.auth.models import User
 
 from .models import Branch,GLAMember,Course,State,City
 from .forms import GLAMemberForm
@@ -24,47 +25,59 @@ class MemberCreateView(LoginRequiredMixin,CreateView):
   model = GLAMember
   form_class = GLAMemberForm
   template_name = 'membercreate.htm'
-  success_url = reverse_lazy('home')
 
-  # def get(self,request,*args,**kwargs):
-  #   return render(request,self.template_name,{
-  #     'form':GLAMemberForm(initial={
-  #       'branch':Branch.objects.none()
-  #     }),
-  #   })
+  def get(self,request,*args,**kwargs):
+    if GLAMember.objects.filter(user=request.user).exists():
+      return render(request,'snippets/profileexists.htm',{})
+    return super(MemberCreateView,self).get(request,*args,**kwargs)
 
-  # def post(self,request,*args, **kwargs):
-  #   form = GLAMemberForm(request.POST,request.FILES)
-  #   print('....in post()')
-  #   print('POST = ',request.POST)
-  #   print('FILES = ', request.FILES)
-  #   # course_id = request.POST.get('course', None)
-  #   # if course_id is not None:
-  #   #   form.fields['branch'].queryset = Branch.objects.filter(course_id=course_id).order_by('branch')
-  #   # state_id = request.POST.get('state',None)
-  #   # if state_id is not None:
-  #   #   form.fields['city'].queryset = City.objects.filter(state_id=state_id).order_by('city')
-  #   if form.is_valid():
-  #       print('here.')
-  #       # Call parent form_valid to create model record object
-  #       super(MemberCreateView,self).form_valid(form)
-  #       messages.success(request, 'Member profile created successfully!')      
-  #       return HttpResponseRedirect(self.get_success_url())
-  #   # Form is invalid , set object to None, since class-based view expects model record object
-  #   print('form INVALID')
-  #   self.object = None
-  #   return super(MemberCreateView,self).form_invalid(form)
+  def post(self,request,*args, **kwargs):
+    form = GLAMemberForm(request.POST,request.FILES)
+    # print('....in post()')
+    # print('POST = ',request.POST)
+    # print('FILES = ', request.FILES)
+    course_id = request.POST.get('course', None)
+    if course_id is not None:
+      form.fields['branch'].queryset = Branch.objects.filter(course_id=course_id).order_by('branch')
+    state_id = request.POST.get('state',None)
+    if state_id is not None:
+      form.fields['city'].queryset = City.objects.filter(state_id=state_id).order_by('city')
+    if form.is_valid():
+        # print('\tFORM VALID.')
+        # Call parent form_valid to create model record object
+        # super(MemberCreateView,self).form_valid(form)
+        self.form_valid(form)
+        # obj = form.save(commit=False)
+        # obj.user = request.user
+        # obj.save()
+        # user = request.user
+        # user.glamember = form.save()
+        # user.save()
+        # form.fields['user'] = User.objects.filter(pk=self.request.user.id).first()
+        # form.save()
+        messages.success(request, 'Member profile created successfully!')      
+        return HttpResponseRedirect(self.get_success_url())
+    # Form is invalid , set object to None, since class-based view expects model record object
+    # print('\t FORM INVALID')
+    self.object = None
+    return super(MemberCreateView,self).form_invalid(form)
 
-  def get_context_data(self, **kwargs):
-    form = kwargs.get('form') or super(MemberCreateView,self).get_form()
-    if self.request.method == 'GET':
-      form.fields['city'].queryset =  City.objects.none()
-      form.fields['branch'].queryset = Branch.objects.none()
-    else:
-      form.fields['city'].queryset = City.objects.filter(state_id=form.cleaned_data.get('state')) 
-      form.fields['branch'].queryset = Branch.objects.filter(course_id=form.cleaned_data.get('course'))
-    kwargs['form'] = form 
-    return super().get_context_data(**kwargs)
+  # def get_context_data(self, **kwargs):
+  #   form = kwargs.get('form') or super(MemberCreateView,self).get_form()
+  #   if self.request.method == 'GET':
+  #     print('in CreateView gcd() with GET')
+  #     print('form length = ',len(str(form)))
+  #     # print('req_user',self.request.user)
+  #     # print('db_user',User.objects.filter(pk=self.request.user.id).first())
+  #     # form.fields['city'].queryset =  City.objects.none()
+  #     # form.fields['branch'].queryset = Branch.objects.none()
+  #     print('form length = ',len(str(form)))
+  #   '''else:
+  #     print('in gcd() with POST')
+  #     form.fields['city'].queryset = City.objects.filter(state_id=form.cleaned_data.get('state')) 
+  #     form.fields['branch'].queryset = Branch.objects.filter(course_id=form.cleaned_data.get('course'))'''
+  #   kwargs['form'] = form 
+  #   return super().get_context_data(**kwargs)
 
   # def get_initial(self):
   #   initial = super(MemberCreateView,self).get_initial()
@@ -90,6 +103,11 @@ class MemberCreateView(LoginRequiredMixin,CreateView):
   #   # Add action to valid form phase
   #   messages.success(self.request, 'Member profile created successfully!')        
   #   return HttpResponseRedirect(self.get_success_url())  
+  def form_valid(self, form):
+    form.instance.user = self.request.user
+    super().form_valid(form)
+    # messages.success(self.request, 'Member profile created successfully!')        
+    return HttpResponseRedirect(self.get_success_url())
 
   def get_success_url(self):
     return reverse('memberdetails',kwargs={'slug':self.request.POST.get('username')})
@@ -117,6 +135,65 @@ class MemberCreateView(LoginRequiredMixin,CreateView):
   
 
 #then branches
+
+class MemberUpdateView(LoginRequiredMixin,UpdateView):
+  login_url = reverse_lazy('login')
+  model = GLAMember
+  fields = ['username','name','gender','dob','email','phone','state','city','course','branch','year','rollno','joined_in',
+              'working_days','preferred_days','photo']
+  slug_field = 'username'
+  template_name = 'membercreate.htm'
+
+  # def post(self,*args, **kwargs):
+  #   form = GLAMemberForm(self.request.POST,self.request.FILES)
+  #   print('....in UpdateView post()')
+  #   print('POST = ',self.request.POST)
+  #   print('FILES = ', self.request.FILES)
+  #   course_id = self.request.POST.get('course', None)
+  #   if course_id is not None:
+  #     form.fields['branch'].queryset = Branch.objects.filter(course_id=course_id).order_by('branch')
+  #   state_id = self.request.POST.get('state',None)
+  #   if state_id is not None:
+  #     form.fields['city'].queryset = City.objects.filter(state_id=state_id).order_by('city')
+  #   if form.is_valid():
+  #       print('\tFORM VALID.')
+  #       # Call parent form_valid to create model record object
+  #       super(MemberUpdateView,self).form_valid(form)
+  #       # self.form_valid(form)
+  #       messages.success(self.request, 'Member profile created successfully!')      
+  #       return HttpResponseRedirect(self.get_success_url())
+  #   # Form is invalid , set object to None, since class-based view expects model record object
+  #   print('\t FORM INVALID')
+  #   self.object = None
+  #   return super(MemberUpdateView,self).form_invalid(form)
+
+  # def get_context_data(self, **kwargs):
+  #   kwargs = super().get_context_data(**kwargs)
+  #   form = kwargs.get('form') or super(MemberUpdateView,self).get_form()
+  #   if self.request.method == 'GET':
+  #     print('UpdateView gcd() with GET')
+  #     print('kwargs', kwargs)
+  #     print('form',len(str(form)))
+  #   else:
+  #     print('in gcd() with POST')
+  #     print('POST = ',self.request.POST)
+  #     print('FILES = ', self.request.FILES)
+  #     form = GLAMemberForm(self.request.POST,self.request.FILES)
+  #     form.fields['city'].queryset = City.objects.filter(state_id=self.request.POST.get('state')) 
+  #     form.fields['branch'].queryset = Branch.objects.filter(course_id=self.request.POST.get('course'))
+  #     print('form',len(str(form)))
+  #     if form.is_valid():
+  #       print('\tVALID FORM')
+  #       # self.form_valid(form)
+  #   kwargs['form'] = form 
+  #   return kwargs
+  
+  # def form_valid(self, form):
+  #   form.instance.user = self.request.user
+  #   super(MemberUpdateView,self).form_valid(form)
+  #   messages.success(self.request, 'Member profile updated successfully!')        
+  #   return HttpResponseRedirect(self.get_success_url())
+
 
 class MemberDetails(DetailView):
   model = GLAMember

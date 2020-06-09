@@ -18,7 +18,7 @@ class BranchAdmin(admin.ModelAdmin):
 admin.site.register(Branch,BranchAdmin)
 
 class GLAMemberAdmin(admin.ModelAdmin):
-  list_display = ['username','name','joined_in','pk',]
+  list_display = ['username','user','name','joined_in','pk',]
   class Meta:
     model = GLAMember
 

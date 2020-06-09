@@ -1,12 +1,27 @@
 {% extends 'base.htm' %}
 {% block content %}
-  <p><h2>GLA Member details</h2></p>
-  <p><b>Username: </b>{{ glamember.username }}</p>
-  <p><b>Name: </b>{{ glamember.name }}</p>
-  <p><b>City: </b>{{ glamember.city }}</p>
-  <p><b>DOB: </b>{{ glamember.dob }}</p>
-  <p><b></b>{{ glamember. }}</p>
-  <p><b>Preferred working days:</b>{{ glamember.preferred_days.all }}</p>
-  <!-- <img src={{ glamember.photo.url }} /> -->
-
+<div class="row no-gutters">
+  <div class="col-8">
+    <!-- {% url 'memberupdate' request.user %} -->
+    <a class="btn btn-success" href="{% url 'memberupdate' request.user %}">Update Profile</a>
+    <p><h2>GLA Member details</h2></p>
+    <p><b>Username: </b>{{ glamember.username }}</p>
+    <p><b>Name: </b>{{ glamember.name }}</p>
+    <p><b>City: </b>{{ glamember.city }}</p>
+    <p><b>DOB: </b>{{ glamember.dob }}</p>
+    <p><b>Email: </b>{{ glamember.email }}</p>
+    <p><b>From: </b>{{ glamember.city }},{{ glamember.state }}</p>
+    <p><b>Course details: </b>{{ glamember.course }},{{ glamember.branch }}</p>
+    <p><b>Member since: </b>{{ glamember.joined_in }}</p>
+    <p><b>Preferred working days:</b>
+      {% for day in glamember.preferred_days.all %}
+        {{ day }}
+      {% endfor %}
+    </p>
+    <p><b>Total working days: </b>{{ glamember.working_days }}</p>
+  </div>
+  <div class="col-4">
+    <img class='profile-pic' src={{ glamember.photo.url }} />
+  </div>
+</div>
 {% endblock content %}
