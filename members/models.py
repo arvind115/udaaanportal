@@ -3,6 +3,8 @@ from django.db.models.signals import post_save
 from django.core.validators import RegexValidator
 from django.contrib.auth.models import User
 from django.urls import reverse
+from os import path,remove
+from django.conf import settings
 
 # Create your models here.
 class State(models.Model):
@@ -28,8 +30,8 @@ class City(models.Model):
 
 class Course(models.Model):
   course_choices = (
-    ('btech','B.Tech'),
-    ('mtech','M.Tech'),
+    ('B.Tech','B.Tech'),
+    ('M.Tech','M.Tech'),
     ('bphrama','B.Pharma'),
     ('mpharma','M.Pharma'),
     ('biotech','Biotech'),
@@ -92,10 +94,15 @@ class Day(models.Model):
   class Meta:
     verbose_name = 'Day'
     verbose_name_plural = 'Days'
-  
-def store_file_name(instance,filename):
-  return 'avatars/{0}.{1}'.format(instance.username,filename.split('.')[-1])
 
+
+def store_file_name(instance,filename):
+  ext = path.splitext(filename)[1]
+  FILE_PATH = path.join(settings.MEDIA_ROOT,'avatars',f'{instance.username}{ext}')
+  if path.isfile(FILE_PATH):
+    remove(FILE_PATH)
+  return f'avatars/{instance.username}{ext}'
+  
 class GLAMember(models.Model):
   gender_choices = (
     ('Male','Male'),
@@ -132,13 +139,3 @@ class GLAMember(models.Model):
   class Meta:
     verbose_name = 'GLA Member'
     verbose_name_plural = 'GLA Members'
-
-def save_user(sender, instance, **kwargs):
-    print('\tin save_user()')
-    print('kwargs = ',kwargs)
-    print('user = ',instance.user)
-    print('username = ',instance.username)
-    instance.user = User.objects.filter(username=instance.username).first()
-    instance.save()
-
-# post_save.connect(save_user, sender=GLAMember)
