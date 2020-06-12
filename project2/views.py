@@ -17,12 +17,16 @@ def registerview(request,*args,**kwargs):
   if request.method == 'POST':
     form = UserCreationForm(request.POST)
     if form.is_valid():
-      form.save()
-      username = form.cleaned_data.get('username')
-      raw_password = form.cleaned_data.get('password')
-      user = authenticate(username=username,password=raw_password)
-      login(request,user)
-      return redirect('home')
+      user = form.save()
+      # username = form.cleaned_data.get('username')
+      # raw_password = form.cleaned_data.get('password')
+      # user = authenticate(username=username,password=raw_password)
+      if user is not None:
+        login(request,user)
+        return redirect('home')
+      else:
+        print('could not register')
+        return redirect('register')
   else:
     form = UserCreationForm()
   return render(request,'register.htm',{

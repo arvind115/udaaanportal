@@ -1,4 +1,8 @@
-<option value="">Select City</option>
+{% if request.user.glamember.city %}
+  <option value="{{ request.user.glamember.city.pk }}">{{ request.user.glamember.city }}</option>
+{% else %}
+  <option value="">Select City</option>
+{% endif %}
 {% for city in cities %}
 <option value="{{ city.pk }}">{{ city.city }}</option>
 {% endfor %}

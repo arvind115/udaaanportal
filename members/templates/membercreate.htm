@@ -2,8 +2,11 @@
 {% block content %}
 <div class="row no-gutters" style="background: none;">
     <div class="col-md-8 offset-md-2 col-sm-12" style="background: none;">
-    <form method="POST" enctype="multipart/form-data" data-branches-url="{% url 'ajax_load_branches' %}" class="form-control">{% csrf_token %}
-        <div class="form-row">
+      <p>City: {{ request.user.glamember.city }}</p>
+      <form method="POST" enctype="multipart/form-data" data-branches-url="{% url 'ajax_load_branches' %}" class="form form-control">{% csrf_token %}
+        {{ form.errors }}
+{{ form.non_field_errors }}
+        <div class="form-row" style="background: none;">
           <div class="col-2">{{ form.username.label }}</div>
           <div class="col-4">{{ form.username }}</div>
           <div class="col-2">{{ form.name.label }}</div>
@@ -51,20 +54,8 @@
           <div class="col-2">{{ form.photo.label }}</div>
           <div class="col-4">{{ form.photo }}</div>
         </div>
-        <!-- <div class="form-row">
-          <div class="col-2">{{ form.preferred_days.label }}</div>
-          <div class="col-10"> -->
-              <!-- <select id="days-select" multiple>
-                  
-                    {% for day in form.preferred_days %}
-                    <input type="checkbox">{{ day }}</input>
-                    {% endfor %}
-                  </option> 
-              </select> 
-          </div>
-        </div> -->
       <button type="submit" class="btn btn-success" id='posup'>Create Profile</button>
-    </form>
+    </form> 
    </div>
 </div>
      <!-- {% if request.user.glamember %}

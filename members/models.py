@@ -128,7 +128,7 @@ class GLAMember(models.Model):
   joined_in = models.DateField(blank=True,null=True,auto_now=False, auto_now_add=False)
   working_days = models.IntegerField(default=0,null=True,blank=True)
   preferred_days = models.ManyToManyField(Day)
-  photo = models.FileField(upload_to=store_file_name,null=True)
+  photo = models.ImageField(upload_to=store_file_name,null=True)
 
   def __str__(self):
     return self.username

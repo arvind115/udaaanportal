@@ -1,4 +1,8 @@
-<option value="">Select Branch</option>
+{% if request.user.glamember.branch %}
+  <option value="{{ request.user.glamember.branch.pk }}">{{ request.user.glamember.branch }}</option>
+{% else %}
+  <option value="">Select Branch</option>
+{% endif %}
 {% for branch in branches %}
 <option value="{{ branch.pk }}">{{ branch.branch }}</option>
 {% endfor %}

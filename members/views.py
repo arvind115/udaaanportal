@@ -16,8 +16,10 @@ def load_branches(request,*args,**kwargs):
     'branches':Branch.objects.filter(course=request.GET.get('course'))
   })
 def load_cities(request,*args,**kwargs):
+  print('kwargs = ',kwargs)
   return render(request, 'load_cities.htm', {
-    'cities':City.objects.filter(state=request.GET.get('state'))
+    'cities':City.objects.filter(state=request.GET.get('state')),
+    'dashes':True
   })
 
 class MemberCreateView(LoginRequiredMixin,CreateView):
@@ -28,14 +30,15 @@ class MemberCreateView(LoginRequiredMixin,CreateView):
 
   def get(self,request,*args,**kwargs):
     if GLAMember.objects.filter(user=request.user).exists():
+    # if request.user.glamember:
       return render(request,'snippets/profileexists.htm',{})
     return super(MemberCreateView,self).get(request,*args,**kwargs)
 
   def post(self,request,*args, **kwargs):
     form = GLAMemberForm(request.POST,request.FILES)
-    # print('....in post()')
-    # print('POST = ',request.POST)
-    # print('FILES = ', request.FILES)
+    print('....in post()')
+    print('POST = ',request.POST)
+    print('FILES = ', request.FILES)
     course_id = request.POST.get('course', None)
     if course_id is not None:
       form.fields['branch'].queryset = Branch.objects.filter(course_id=course_id).order_by('branch')
@@ -43,7 +46,7 @@ class MemberCreateView(LoginRequiredMixin,CreateView):
     if state_id is not None:
       form.fields['city'].queryset = City.objects.filter(state_id=state_id).order_by('city')
     if form.is_valid():
-        # print('\tFORM VALID.')
+        print('\tFORM VALID.')
         # Call parent form_valid to create model record object
         # super(MemberCreateView,self).form_valid(form)
         self.form_valid(form)
@@ -58,7 +61,7 @@ class MemberCreateView(LoginRequiredMixin,CreateView):
         messages.success(request, 'Member profile created successfully!')      
         return HttpResponseRedirect(self.get_success_url())
     # Form is invalid , set object to None, since class-based view expects model record object
-    # print('\t FORM INVALID')
+    print('\t FORM INVALID')
     self.object = None
     return super(MemberCreateView,self).form_invalid(form)
 
@@ -120,29 +123,47 @@ class MemberCreateView(LoginRequiredMixin,CreateView):
   
 
 
-# seed into db
-#course first
-# for course in (('btech','B.Tech'),
-#     ('mtech','M.Tech'),
-#     ('bphrama','B.Pharma'),
-#     ('mpharma','M.Pharma'),
-#     ('biotech','Biotech'),
-#     ('bba','BBA'),
-#     ('mba','MBA'),
-#     ('bca','BCA'),
-#     ('mca','MCA'),
-#     ('polytechnic','Polytechnic')):
-  
-
-#then branches
+# seed into db  
 
 class MemberUpdateView(LoginRequiredMixin,UpdateView):
   login_url = reverse_lazy('login')
   model = GLAMember
   fields = ['username','name','gender','dob','email','phone','state','city','course','branch','year','rollno','joined_in',
               'working_days','preferred_days','photo']
+  # form_class = GLAMemberForm
   slug_field = 'username'
   template_name = 'membercreate.htm'
+
+  def get(self,request,*args,**kwargs):
+    print('in GET of UpdateView')
+    if not GLAMember.objects.filter(user=request.user).exists():
+      return redirect('membercreate')
+    if not str(kwargs.get('slug')) == str(request.user):
+      return HttpResponse('You are NOT authorised to edit other members details')
+    #   profile exists for requset.user, logged in user is request.user
+    return super(MemberUpdateView,self).get(request,*args,**kwargs)
+
+  # def get_object(self,*args,**kwargs):
+  #   obj = super().get_object(*args,**kwargs)
+  #   print('in get_object()')
+  #   print(kwargs)
+  #   print(self.request.GET)
+  # #   # print(type(obj.state))
+  # #   # cities = obj.state.city_set.all()
+  # #   # print(cities)
+  # #   # print(type(obj.city))
+  #   return obj
+
+  def get_form(self,*args,**kwargs):
+    form =  super().get_form(*args,**kwargs)
+    print('in get_form')
+    print(len(str(form)))
+    # state = form.fields['state']
+    # print(state)
+    form.fields['city'].queryset = City.objects.none()
+    form.fields['branch'].queryset = Branch.objects.none()
+    print(len(str(form)))
+    return form
 
   # def post(self,*args, **kwargs):
   #   form = GLAMemberForm(self.request.POST,self.request.FILES)
