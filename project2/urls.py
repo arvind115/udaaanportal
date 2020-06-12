@@ -21,6 +21,7 @@ from django.conf import settings
 from django.contrib.auth.views import LoginView
 
 from .views import home,registerview, logoutview
+from attendance.views import AttendanceCreate
 from members.views import MemberCreateView,MemberUpdateView, load_branches, load_cities, MemberDetails
 
 urlpatterns = [
@@ -35,6 +36,8 @@ urlpatterns = [
 
     path('doesnotmatter', load_branches, name='ajax_load_branches'),
     path('doesnotmatter2', load_cities, name='ajax_load_cities'),
+
+    path('attendancecreate',AttendanceCreate.as_view(),name='attendancecreate'),
 
     path('admin/', admin.site.urls),
 ]

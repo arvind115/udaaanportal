@@ -1,0 +1,10 @@
+{% extends 'base.htm' %}
+
+{% block content %}
+
+<form method="POST" class="form-control">{% csrf_token %}
+   {{ form.as_p }}
+   <button type="submit" class="btn btn-success btn-sm">Upload</button>
+</form>
+
+{% endblock content %}

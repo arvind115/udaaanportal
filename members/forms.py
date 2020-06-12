@@ -15,11 +15,11 @@ class GLAMemberForm(forms.ModelForm):
   #   ('Saturday','Saturday'),
   #   ('Sunday','Sunday'),
   # )
-  preferred_days =  forms.ModelMultipleChoiceField(
-        required=True,
-        widget=forms.CheckboxSelectMultiple(),
-        queryset = Day.objects.all()
-  )
+  # preferred_days =  forms.ModelMultipleChoiceField(
+  #       required=True,
+  #       widget=forms.CheckboxSelectMultiple(),
+  #       queryset = Day.objects.all()
+  # )
   # preferred_day = forms.MultipleChoiceField(
   #   choices=[(option, option) for option in
   #            Day.objects.all()], widget=forms.CheckboxSelectMultiple(),
