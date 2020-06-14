@@ -11,7 +11,7 @@ class AttendanceForm(forms.ModelForm):
   members = forms.ModelMultipleChoiceField(
         required=True,
         widget=forms.CheckboxSelectMultiple(),
-        queryset = GLAMember.objects.all())
+        queryset = GLAMember.objects.none())
 
   class Meta:
     model = Attendance

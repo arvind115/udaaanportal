@@ -32,4 +32,8 @@ admin.site.register(City,CityAdmin)
 
 admin.site.register(State)
 
-admin.site.register(Day)
+class DayAdmin(admin.ModelAdmin):
+  list_display = ['day','pk']
+  class Meta:
+    model = Day
+admin.site.register(Day,DayAdmin)
