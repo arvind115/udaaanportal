@@ -29,6 +29,9 @@ class GLAMemberForm(forms.ModelForm):
   dob = forms.DateField(widget=DateInputWidget())
   joined_in = forms.DateField(widget=DateInputWidget())
 
+  error_css_class = 'error'
+  required_css_class = 'required'
+
   class Meta:
    model = GLAMember
    fields = ['username','name','gender','dob','email','phone','state','city','course','branch','year','rollno','joined_in',
