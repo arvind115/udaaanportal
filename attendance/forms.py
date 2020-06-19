@@ -7,7 +7,7 @@ class DateInputWidget(forms.DateInput):
   input_type = 'date'
 
 class AttendanceForm(forms.ModelForm):
-  datetime = forms.DateField(widget=DateInputWidget())
+  # datetime = forms.DateField(widget=DateInputWidget())
   members = forms.ModelMultipleChoiceField(
         required=True,
         widget=forms.CheckboxSelectMultiple(),
@@ -15,5 +15,5 @@ class AttendanceForm(forms.ModelForm):
 
   class Meta:
     model = Attendance
-    fields = '__all__'
+    fields = ('members',) #datetime field should be handled in GET & POST
     widgets = { 'DateInputWidget': DateInputWidget }

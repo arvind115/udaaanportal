@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.urls import reverse_lazy,reverse
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.views.generic.edit import CreateView
 
 from datetime import datetime as dt
@@ -12,8 +12,9 @@ from .forms import AttendanceForm
 DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
 
 # Create your views here.
-class AttendanceCreate(LoginRequiredMixin,CreateView):
+class AttendanceCreate(LoginRequiredMixin,PermissionRequiredMixin,CreateView):
   login_url = reverse_lazy('login')
+  permission_required = ('attendance.add_attendance')
   model = Attendance
   form_class = AttendanceForm
   template_name = 'attendancecreate.htm'
