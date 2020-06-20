@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect, HttpResponseRedirect, HttpResponse
 from django.urls import reverse_lazy,reverse
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.views.generic.edit import CreateView
@@ -20,12 +20,14 @@ class AttendanceCreate(LoginRequiredMixin,PermissionRequiredMixin,CreateView):
   template_name = 'attendancecreate.htm'
   success_url = reverse_lazy('home')
 
-  # def get(self,request,*args,**kwargs):
-    # print('in GET of AttendanceCreateView')
-    # print('today is ->',Day.objects.filter(pk=dt.now().weekday()+1).first())
-    # return super().get(request,*args,**kwargs)
+  def get(self,request,*args,**kwargs):
+    # uncomment following lines in production
+    # if not ( 4 <= dt.now().hour <= 6):
+      # return HttpResponse('Attendance cannot be uploaded right now..')
+    return super().get(request,*args,**kwargs)
 
   def get_form(self,*args,**kwargs):
+    # print(Attendance.objects.get_by_year(yearno=2020))#,user=self.request.user))
     form = super().get_form(*args,**kwargs)
     # print("in get_form() of AttendanceCreate view")
     qs = Day.objects.filter(day=DAYS[dt.now().weekday()]).first().glamember_set.all().order_by('year') 

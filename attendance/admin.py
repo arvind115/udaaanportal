@@ -3,4 +3,11 @@ from django.contrib import admin
 # Register your models here.
 from .models import Attendance
 
-admin.site.register(Attendance)
+class AttendanceAdmin(admin.ModelAdmin):
+  list_display = ['datetime']
+  # readonly_fields = ('datetime',)
+
+  def members(self,obj):
+    return str(obj.members.all().first().username)
+
+admin.site.register(Attendance, AttendanceAdmin)
