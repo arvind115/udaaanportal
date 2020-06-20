@@ -111,24 +111,24 @@ class GLAMember(models.Model):
   )
 
   user = models.OneToOneField(User, on_delete=models.CASCADE,null=True)
-  username  = models.CharField(max_length=50,null=True)
-  name      = models.CharField(max_length=50,null=True)
-  gender    = models.CharField(max_length=8,choices=gender_choices,null=True)
-  dob       = models.DateField(null=True,auto_now=False, auto_now_add=False)
-  email     = models.EmailField(max_length=50,null=True)
+  username  = models.CharField(max_length=50,null=True,help_text='your username,non-editable')
+  name      = models.CharField(max_length=50,null=True,help_text='your full name')
+  gender    = models.CharField(max_length=8,choices=gender_choices,null=True,help_text='select your gender')
+  dob       = models.DateField(null=True,auto_now=False, auto_now_add=False,help_text='DOB: yyyy-mm-dd')
+  email     = models.EmailField(max_length=50,null=True,help_text='your GLA email id')
   phone_regex = RegexValidator(regex=r'^\+?1?\d{9,10}$', 
             message="Phone number must be entered in the format: +91xxxxxxxxxx")
-  phone = models.CharField(validators=[phone_regex], max_length=10, blank=True) # validators should be a list
-  state = models.ForeignKey(State,null=True, on_delete=models.CASCADE)
-  city = models.ForeignKey(City,null=True, on_delete=models.CASCADE)
-  course = models.ForeignKey(Course,null=True, on_delete=models.CASCADE)
-  branch  = models.ForeignKey(Branch,null=True, on_delete=models.CASCADE)
-  year = models.IntegerField(null=True,choices=((1,1),(2,2),(3,3),(4,4)))
-  rollno = models.IntegerField(null=True)
-  joined_in = models.DateField(blank=True,null=True,auto_now=False, auto_now_add=False)
-  working_days = models.IntegerField(default=0,null=True,blank=True)
-  preferred_days = models.ManyToManyField(Day)
-  photo = models.ImageField(upload_to=store_file_name,null=True)
+  phone = models.CharField(validators=[phone_regex], max_length=10, blank=True,help_text='+91xxxxxxxxxx') # validators should be a list
+  state = models.ForeignKey(State,null=True, on_delete=models.CASCADE,help_text='select state')
+  city = models.ForeignKey(City,null=True, on_delete=models.CASCADE,help_text='select city')
+  course = models.ForeignKey(Course,null=True, on_delete=models.CASCADE, help_text='select course')
+  branch  = models.ForeignKey(Branch,null=True, on_delete=models.CASCADE,help_text='select Branch')
+  year = models.IntegerField(null=True,choices=((1,1),(2,2),(3,3),(4,4)),help_text='select year')
+  rollno = models.IntegerField(null=True,help_text='university roll no')
+  joined_in = models.DateField(blank=True,null=True,auto_now=False, auto_now_add=False,help_text='date of joining Udaaan')
+  working_days = models.IntegerField(default=0,null=True,blank=True,help_text='non-editable')
+  preferred_days = models.ManyToManyField(Day,help_text='select days you want to work on')
+  photo = models.ImageField(upload_to=store_file_name,null=True,help_text='your profile photo')
 
   def __str__(self):
     return self.username

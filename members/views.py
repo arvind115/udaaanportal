@@ -7,6 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.contrib.auth.models import User
 
+
 from .models import Branch,GLAMember,Course,State,City
 from .forms import GLAMemberForm
 

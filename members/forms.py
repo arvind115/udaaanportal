@@ -2,8 +2,8 @@ from django import forms
 
 from .models import Branch,GLAMember,City,Day
 
-class DateInputWidget(forms.DateInput):
-  input_type = 'date'
+# class DateInputWidget(forms.DateInput):
+#   input_type = 'date'
 
 class GLAMemberForm(forms.ModelForm):
   # DAYS=(
@@ -24,10 +24,10 @@ class GLAMemberForm(forms.ModelForm):
   #   choices=[(option, option) for option in
   #            Day.objects.all()], widget=forms.CheckboxSelectMultiple(),
   #   label="Days", required=True, error_messages={'required': 'myRequiredMessage'})
-  city = forms.ModelChoiceField(queryset=City.objects.none())
-  branch = forms.ModelChoiceField(queryset=Branch.objects.none())
-  dob = forms.DateField(widget=DateInputWidget())
-  joined_in = forms.DateField(widget=DateInputWidget())
+  city = forms.ModelChoiceField(queryset=City.objects.none(),help_text='select city')
+  branch = forms.ModelChoiceField(queryset=Branch.objects.none(),help_text='select branch')
+  # dob = forms.DateField(widget=DateInputWidget())
+  # joined_in = forms.DateField(widget=DateInputWidget())
 
   error_css_class = 'error'
   required_css_class = 'required'
@@ -36,7 +36,14 @@ class GLAMemberForm(forms.ModelForm):
    model = GLAMember
    fields = ['username','name','gender','dob','email','phone','state','city','course','branch','year','rollno','joined_in',
               'working_days','preferred_days','photo']
-   widgets = { 'DateInputWidget': DateInputWidget }
+   widgets = { 
+        'name': forms.TextInput(attrs={'placeholder': 'Name'}),
+        'email': forms.TextInput(attrs={'type':'email','placeholder':'E-mail'}),
+        'dob':forms.DateInput(attrs={'type':'date'}),
+        'phone': forms.TextInput(attrs={'placeholder':'Phone'}),
+        'rollno':forms.NumberInput(attrs={'placeholder':'Roll No'}),
+        'joined_in':forms.DateInput(attrs={'type':'date'}),
+    }
   # fields = '__all__'
   
   # def __init__(self, *args, **kwargs):
