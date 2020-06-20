@@ -6,6 +6,7 @@
       <form method="POST" enctype="multipart/form-data" data-branches-url="{% url 'ajax_load_branches' %}" class="form form-control">{% csrf_token %}
         {{ form.errors }}
 {{ form.non_field_errors }}
+          <input type="hidden" id="user" value="{{ request.user }}" />
         <div class="form-row" style="background: none;">
           <div class="col-2">{{ form.username.label }}</div>
           <div class="col-4">{{ form.username }}</div>
@@ -54,7 +55,12 @@
           <div class="col-2">{{ form.photo.label }}</div>
           <div class="col-4">{{ form.photo }}</div>
         </div>
-      <button type="submit" class="btn btn-success" id='posup'>Create Profile</button>
+        {% if request.path == '/membercreate' %}
+          <button type="submit" class="btn btn-sm btn-success">Create Profile</button>  
+        {% else %}
+          <button type="submit" class="btn btn-sm btn-primary">Update Profile</button>
+        {% endif %}
+      
     </form> 
    </div>
 </div>

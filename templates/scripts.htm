@@ -1,0 +1,85 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#id_preferred_days').bsMultiSelect({ 
+          // nonSelectedText: 'Pick your days..',
+        });
+    });
+</script>
+<script>
+  $("#id_course").change(function () {
+    $.ajax({                       // initialize an AJAX request
+      url: '../doesnotmatter',       // set the url of the request (= localhost:8000/doesnotmatter/)
+      data: {
+        'course': $(this).val()       // add the course id to the GET parameters
+      },
+      success: function (data) {   // `data` is the return of the `load_branches` view function
+        $("#id_branch").html(data);  // replace the contents of the branch input with the data that came from the server
+      },
+      error: function(err){
+        console.log('AJAX request failed..');
+      }
+    });
+  });
+</script>
+<script>
+  $("#id_state").change(function () {
+    // get the selected state ID from the HTML input
+    $.ajax({                       // initialize an AJAX request
+      url: '../doesnotmatter2',       // set the url of the request (= localhost:8000/doesnotmatter2/)
+      data: {
+        'state': $(this).val()       // add the state id to the GET parameters
+      },
+      success: function (data) {   // `data` is the return of the `load_state` view function
+        console.log('AJAX call successful..');
+        $("#id_city").html(data);  // replace the contents of the branch input with the data that came from the server
+      },
+      error: function(err){
+        console.log('AJAX request failed..');
+      }
+    });
+  });
+</script>
+<script type="text/javascript">
+  $(document).ready(function() {
+    const url = $(location).attr('pathname');
+    console.log('url = ',url);
+    if( url.includes('/membercreate') ) {
+      $('#id_username').val(document.getElementById('user').value);
+      $('#id_username').prop('readonly', true);
+      $('#id_working_days').prop('readonly', true);
+    }
+
+    if( url.includes('/memberupdate') ){
+      $('#id_username').prop('readonly', true);
+      $('#id_working_days').prop('readonly', true);
+
+      // get the selected state ID from the HTML input
+      $.ajax({                       // initialize an AJAX request
+        url: '../doesnotmatter2',       // set the url of the request (= localhost:8000/doesnotmatter2/)
+        data: {
+          'state': $("#id_state").val()       // add the state id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_state` view function
+          console.log('AJAX call successful..');
+          $("#id_city").html(data);  // replace the contents of the branch input with the data that came from the server
+        },
+        error: function(err){
+          console.log('AJAX request failed..');
+        }
+      });
+      // get the selected course ID from the HTML input
+      $.ajax({                       // initialize an AJAX request
+        url: '../doesnotmatter',       // set the url of the request (= localhost:8000/doesnotmatter/)
+        data: {
+          'course': $('#id_course').val()       // add the course id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_branches` view function
+          $("#id_branch").html(data);  // replace the contents of the branch input with the data that came from the server
+        },
+        error: function(err){
+          console.log('AJAX request failed..');
+        }
+      });
+    }
+  });
+</script>

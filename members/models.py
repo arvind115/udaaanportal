@@ -124,7 +124,7 @@ class GLAMember(models.Model):
   course = models.ForeignKey(Course,null=True, on_delete=models.CASCADE)
   branch  = models.ForeignKey(Branch,null=True, on_delete=models.CASCADE)
   year = models.IntegerField(null=True,choices=((1,1),(2,2),(3,3),(4,4)))
-  rollno = models.IntegerField(null=True,default=0)
+  rollno = models.IntegerField(null=True)
   joined_in = models.DateField(blank=True,null=True,auto_now=False, auto_now_add=False)
   working_days = models.IntegerField(default=0,null=True,blank=True)
   preferred_days = models.ManyToManyField(Day)
