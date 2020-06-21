@@ -1,102 +1,40 @@
 {% extends 'base.htm' %}
 {% block content %}
 <div class="row no-gutters" style="background: none;">
-    <div class="col-md-8 offset-md-2 col-sm-12" style="background: none;">
-      <form method="POST" enctype="multipart/form-data" data-branches-url="{% url 'ajax_load_branches' %}" class="form-horizontal">{% csrf_token %}
-        <input type="hidden" id="user" value="{{ request.user }}" />
-        <!-- <div class="form-row" style="background: none;">
-          <div class="col-md-2 col-sm-12">{{ form.username.label }}</div>
-          <div class="col-md-4 col-sm-12">{{ form.username }}
-          </div>
-          <div class="col-md-2 col-sm-12">{{ form.name.label }}</div>
-          <div class="col-md-4 col-sm-12">{{ form.name }}
-            {% if form.name.help_text %}
-              present.
-            <small style="color:grey">{{ form.name.help_text }}</small>
-          {% endif %}
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="col-md-2 col-sm-12">{{ form.gender.label }}</div>
-          <div class="col-md-4 col-sm-12">{{ form.gender }}</div>
-          <div class="col-md-2 col-sm-12">{{ form.email.label }}</div>
-          <div class="col-md-4 col-sm-12">{{ form.email }}</div>
-        </div>
-        <div class="form-row">
-          <div class="col-md-2 col-sm-12">{{ form.dob.label }}</div>
-          <div class="col-md-4 col-sm-12">{{ form.dob }}</div>
-          <div class="col-md-2 col-sm-12" >{{ form.phone.label }}</div>
-          <div class="col-md-4">{{ form.phone }}</div>
-        </div>
-        <div class="form-row">
-          <div class="col-md-2 col-sm-12">{{ form.state.label }}</div>
-          <div class="col-md-4 col-sm-12">{{ form.state }}</div>
-          <div class="col-md-2 col-sm-12">{{ form.city.label }}</div>
-          <div class="col-md-4 col-sm-12">{{ form.city }}</div>
-        </div>
-        <div class="form-row">
-          <div class="col-md-2 col-sm-12">{{ form.course.label }}</div>
-          <div class="col-md-4 col-sm-12">{{ form.course }}</div>
-          <div class="col-md-2 col-sm-12">{{ form.branch.label }}</div>
-          <div class="col-md-4 col-sm-12">{{ form.branch }}</div>
-        </div>
-        <div class="form-row">
-          <div class="col-md-2 col-sm-12">{{ form.year.label }}</div>
-          <div class="col-md-4 col-sm-12">{{ form.year }}</div>
-          <div class="col-md-2 col-sm-12">{{ form.rollno.label }}</div>
-          <div class="col-md-4 col-sm-12">{{ form.rollno }}</div>
-        </div>
-        <div class="form-row">
-          <div class="col-md-2 col-sm-12">{{ form.joined_in.label }}</div>
-          <div class="col-md-4 col-sm-12">{{ form.joined_in }}</div>
-          <div class="col-md-2 col-sm-12">{{ form.working_days.label }}</div>
-          <div class="col-md-4 col-sm-12">{{ form.working_days }}</div>
-        </div>
-        <div class="form-row">
-          <div class="col-md-2 col-sm-12">{{ form.preferred_days.label }}</div>
-          <div class="col-md-4 col-sm-12">{{ form.preferred_days }}</div>
-          <div class="col-md-2 col-sm-12">{{ form.photo.label }}</div>
-          <div class="col-md-4 col-sm-12">{{ form.photo }}</div>
-        </div> -->
+    <div class="col-md-8 offset-md-2 col-sm-12" style="background: none;">    
+    <form method="POST" enctype="multipart/form-data" data-branches-url="{% url 'ajax_load_branches' %}">{% csrf_token %}
+        <input type="hidden" id="user" value="{{ request.user }}" />  
         {% for field in form %}
           {% if not forloop.counter|divisibleby:2 %}
-            <div class="form-row">
+            <div class="form-row no-gutters" style="background-color: none;">
           {% endif %}
-          <div class="col-md-2 col-sm-12">
-            <!-- {{ field.label_tag }} -->
-          </div>
-          <div class="col-md-4 col-sm-12">
-            {{ field}}
-            {% if field.errors %}
-              {% for error in field.errors %}
-                <p style="color:red"><small>{{ error }}</small></p>
-              {% endfor %}
-            {% else %}
-              {% if field.help_text %}
-                <p><small class="help-block" style="color:grey">{{ field.help_text }}</small></p>
-              {% endif %}
-            {% endif %}
+          <div class="col-md-5 col-sm-12" style="background-color: none;">
+            <div class="inputDiv">
+                {{ field}}
+                {{ field.label_tag }}
+                {% if field.errors %}
+                  {% for error in field.errors %}
+                    <p style="color:red"><i><small>{{ error }}</small></i></p>
+                  {% endfor %}
+                {% else %}
+                  {% if field.help_text %}
+                    <p><i><small class="help-block" style="color:grey">{{ field.help_text }}</small></i></p>
+                  {% endif %}
+                {% endif %}
+            </div> 
           </div>
           {% if forloop.counter|divisibleby:2 %} 
             </div>
           {% endif %}
-          <!-- {{ field.label_tag }} <br> -->
-          <!-- {{ field }} -->
-          <!-- {% if field.help_text %}
-            <p><small style="color:grey">{{ field.help_text }}</small></p>
-          {% endif %}
-          {% for error in field.errors %}
-            <p style="color:red">{{ error }}</p>
-          {% endfor %}
-        </p> -->
         {% endfor %}
+
         {% if request.path == '/membercreate' %}
           <button type="submit" class="btn btn-sm btn-success">Create Profile</button>  
         {% else %}
           <button type="submit" class="btn btn-sm btn-primary">Update Profile</button>
         {% endif %}
       
-    </form> 
+    </form>  
    </div>
 </div>
      <!-- {% if request.user.glamember %}

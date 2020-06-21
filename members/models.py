@@ -105,6 +105,7 @@ def store_file_name(instance,filename):
   
 class GLAMember(models.Model):
   gender_choices = (
+    ("",""),
     ('Male','Male'),
     ('Female','Female'),
     ('Other','Other')
@@ -114,7 +115,7 @@ class GLAMember(models.Model):
   username  = models.CharField(max_length=50,null=True,help_text='your username,non-editable')
   name      = models.CharField(max_length=50,null=True,help_text='your full name')
   gender    = models.CharField(max_length=8,choices=gender_choices,null=True,help_text='select your gender')
-  dob       = models.DateField(null=True,auto_now=False, auto_now_add=False,help_text='DOB: yyyy-mm-dd')
+  dob       = models.DateField(null=True,auto_now=False, auto_now_add=False,help_text='DOB: mm-dd-yyyy')
   email     = models.EmailField(max_length=50,null=True,help_text='your GLA email id')
   phone_regex = RegexValidator(regex=r'^\+?1?\d{9,10}$', 
             message="Phone number must be entered in the format: +91xxxxxxxxxx")
@@ -123,8 +124,8 @@ class GLAMember(models.Model):
   city = models.ForeignKey(City,null=True, on_delete=models.CASCADE,help_text='select city')
   course = models.ForeignKey(Course,null=True, on_delete=models.CASCADE, help_text='select course')
   branch  = models.ForeignKey(Branch,null=True, on_delete=models.CASCADE,help_text='select Branch')
-  year = models.IntegerField(null=True,choices=((1,1),(2,2),(3,3),(4,4)),help_text='select year')
-  rollno = models.IntegerField(null=True,help_text='university roll no')
+  year = models.IntegerField(null=True,choices=(("",""),(1,1),(2,2),(3,3),(4,4)),help_text='select year')
+  rollno = models.IntegerField(null=True,blank=True,help_text='university roll no')
   joined_in = models.DateField(blank=True,null=True,auto_now=False, auto_now_add=False,help_text='date of joining Udaaan')
   working_days = models.IntegerField(default=0,null=True,blank=True,help_text='non-editable')
   preferred_days = models.ManyToManyField(Day,help_text='select days you want to work on')
