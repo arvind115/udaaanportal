@@ -1,29 +1,31 @@
 {% extends 'base.htm' %}
 
 {% block content %}
-<h2>Login Page</h2>
-<div class="row no-gutters">
-    <div class="col-md-3 offset-md-4 col-sm-12">
-      <form method="post" class='#'>
-        {% csrf_token %}
-        {% if form.errors %}
-            {% for field in form %}
-                {% for error in field.errors %}
-                    <div class="alert alert-danger">
-                        <strong>{{ error|escape }}</strong>
-                    </div>
-                {% endfor %}
-            {% endfor %}
-            {% for error in form.non_field_errors %}
-                <div class="alert alert-danger">
-                    <strong>{{ error|escape }}</strong>
-                </div>
-            {% endfor %}
-            {% endif %}
-        {{ form.as_p }}
-        <button type="submit" class='btn btn-primary'>Login</button>
-        </form>
-    </div>
+<div class="row no-gutters justify-content-center align-items-center">
+  <div class="col-md-4 col-sm-12">
+    <form method="post">{% csrf_token %}
+      {% for field in form %}
+        <div class="form-row">
+          <div class="col-md-12">
+            <div class="inputDiv">
+              {{ field }}
+              {{ field.label_tag }}
+              {% if field.help_text %}
+                <small style="color:grey">{{ field.help_text }}</small>
+              {% endif %}
+              {% for error in field.errors %}
+                <p style="color:red">{{ error }}</p>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+      <div class="form-row no-gutters" style="background-color: pink;">
+        <div class="col-md-12 d-flex justify-content-center">
+          <button type="submit" class="btn btn-sm btn-success">Log in</button>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>
-
 {% endblock content %}

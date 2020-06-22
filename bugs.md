@@ -8,4 +8,6 @@
 
 # Add AJAX
 
+### Try overriding __init__() method of GLAMemberForm, instead of post() in MemberCreate 
+
 

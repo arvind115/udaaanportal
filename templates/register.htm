@@ -1,20 +1,31 @@
 {% extends 'base.htm' %}
 
 {% block content %}
-<h2>Registeration Page</h2>
-<form method="post">{% csrf_token %}
-    {% for field in form %}
-      <p>
-        {{ field.label_tag }} <br>
-        {{ field }}
-        {% if field.help_text %}
-          <small style="color:grey">{{ field.help_text }}</small>
-        {% endif %}
-        {% for error in field.errors %}
-          <p style="color:red">{{ error }}</p>
-        {% endfor %}
-      </p>
-    {% endfor %}
-  <button type="submit">Sign up</button>
-</form>
+<div class="row no-gutters justify-content-center align-items-center">
+  <div class="col-md-4 col-sm-12">
+    <form method="post">{% csrf_token %}
+      {% for field in form %}
+        <div class="form-row">
+          <div class="col-md-12">
+            <div class="inputDiv">
+              {{ field }}
+              {{ field.label_tag }}
+              {% if field.help_text %}
+                <small style="color:grey">{{ field.help_text }}</small>
+              {% endif %}
+              {% for error in field.errors %}
+                <p style="color:red">{{ error }}</p>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+      <div class="form-row no-gutters" style="background-color: pink;">
+        <div class="col-md-12 d-flex justify-content-center">
+          <button type="submit" class="btn btn-sm btn-success">Sign up</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
 {% endblock content %}

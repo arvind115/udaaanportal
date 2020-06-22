@@ -117,9 +117,9 @@ class GLAMember(models.Model):
   gender    = models.CharField(max_length=8,choices=gender_choices,null=True,help_text='select your gender')
   dob       = models.DateField(null=True,auto_now=False, auto_now_add=False,help_text='DOB: mm-dd-yyyy')
   email     = models.EmailField(max_length=50,null=True,help_text='your GLA email id')
-  phone_regex = RegexValidator(regex=r'^\+?1?\d{9,10}$', 
+  phone_regex = RegexValidator(regex=r'^\+?1?\d{9,13}$', 
             message="Phone number must be entered in the format: +91xxxxxxxxxx")
-  phone = models.CharField(validators=[phone_regex], max_length=10, blank=True,help_text='+91xxxxxxxxxx') # validators should be a list
+  phone = models.CharField(validators=[phone_regex], max_length=13, blank=True,help_text='+91xxxxxxxxxx') # validators should be a list
   state = models.ForeignKey(State,null=True, on_delete=models.CASCADE,help_text='select state')
   city = models.ForeignKey(City,null=True, on_delete=models.CASCADE,help_text='select city')
   course = models.ForeignKey(Course,null=True, on_delete=models.CASCADE, help_text='select course')

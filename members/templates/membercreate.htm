@@ -11,14 +11,14 @@
           <div class="col-md-5 col-sm-12" style="background-color: none;">
             <div class="inputDiv">
                 {{ field}}
-                {{ field.label_tag }}
+                <label for='{{ field.id_for_label }}'>{{ field.label }}</label>
                 {% if field.errors %}
                   {% for error in field.errors %}
                     <p style="color:red"><i><small>{{ error }}</small></i></p>
                   {% endfor %}
                 {% else %}
                   {% if field.help_text %}
-                    <p><i><small class="help-block" style="color:grey">{{ field.help_text }}</small></i></p>
+                    <p class="help-text"><i><small class="help-block" style="color:grey">{{ field.help_text }}</small></i></p>
                   {% endif %}
                 {% endif %}
             </div> 
@@ -33,8 +33,7 @@
         {% else %}
           <button type="submit" class="btn btn-sm btn-primary">Update Profile</button>
         {% endif %}
-      
-    </form>  
+    </form> 
    </div>
 </div>
      <!-- {% if request.user.glamember %}

@@ -1,13 +1,39 @@
 {% extends 'base.htm' %}
-{% load static %}
-
 {% block content %}
-
-<form class="form-control" method="POST" enctype="multipart/form-data">{% csrf_token %}
-  <p>Previous branch : {{ object.branch }}</p>
-  <p>Previous branch : {{ object.course }}</p>
-  {{ form.as_p }}
-  <button type="submit" class="btn btn-success">Update details</button>
-</form>
-
-{% endblock content %}
+<div class="row no-gutters" style="background: none;">
+    <div class="col-md-8 offset-md-2 col-sm-12" style="background: none;">    
+    <form method="POST" enctype="multipart/form-data" data-branches-url="{% url 'ajax_load_branches' %}">{% csrf_token %}
+        <input type="hidden" id="user" value="{{ request.user }}" />  
+        {% for field in form %}
+          {% if not forloop.counter|divisibleby:2 %}
+            <div class="form-row no-gutters" style="background-color: none;">
+          {% endif %}
+          <div class="col-md-5 col-sm-12" style="background-color: none;">
+            <div class="inputDiv">
+                {{ field}}
+                <label for='{{ field.id_for_label }}'>{{ field.label }}</label>
+                {% if field.errors %}
+                  {% for error in field.errors %}
+                    <p style="color:red"><i><small>{{ error }}</small></i></p>
+                  {% endfor %}
+                {% else %}
+                  {% if field.help_text %}
+                    <p class="help-text"><i><small class="help-block" style="color:grey">{{ field.help_text }}</small></i></p>
+                  {% endif %}
+                {% endif %}
+            </div> 
+          </div>
+          {% if forloop.counter|divisibleby:2 %} 
+            </div>
+          {% endif %}
+        {% endfor %}
+          
+        <button type="submit" class="btn btn-sm btn-primary">Update Profile</button>
+    </form> 
+   </div>
+</div>
+     <!-- {% if request.user.glamember %}
+    <p>Profile for {{ request.user }} already exists. Check it <a href='{{ request.user.glamember.get_absolute_url }}'>here</a></p>
+  {% else %} -->
+  <!-- {% endif %} -->
+{% endblock %}
