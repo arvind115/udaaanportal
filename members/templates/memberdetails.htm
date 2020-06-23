@@ -1,32 +1,66 @@
 {% extends 'base.htm' %}
 {% block content %}
+
 <div class="row no-gutters">
-  <div class="col-8">
-    <!-- {% url 'memberupdate' request.user %} -->
-    <a class="btn btn-success" href="{% url 'memberupdate' request.user %}">Update Profile</a>
-    <p><h2>GLA Member details</h2></p>
-    <p><b>Username: </b>{{ glamember.username }}</p>
-    <p><b>Name: </b>{{ glamember.name }}</p>
-    <p><b>Gender:</b>{{ glamember.gender }}</p>
-    <p><b>DOB: </b>{{ glamember.dob }}</p>
-    <p><b>Email: </b>{{ glamember.email }}</p>
-    <p><b>Phone:</b>{{ glamember.phone }}</p>
-    <p><b>City: </b>{{ glamember.city }}</p>
-    <p><b>State: </b>{{ glamember.state }}</p>
-    <p><b>Course: </b>{{ glamember.course }}</p>
-    <p><b>Branch:</b>{{ glamember.branch }}</p>
-    <p><b>Year:</b>{{ glamember.year }}</p>
-    <p><b>Roll No:</b>{{ glamember.rollno}}</p>
-    <p><b>Member since: </b>{{ glamember.joined_in }}</p>
-    <p><b>Preferred working days:</b>
-      {% for day in glamember.preferred_days.all %}
-        {{ day }}
-      {% endfor %}
-    </p>
-    <p><b>Total working days: </b>{{ glamember.working_days }}</p>
+  <div class="col-sm-12 d-flex justify-content-center">
+    <div class="underline"><h3>Member Details</h3></div>
   </div>
-  <div class="col-4">
-    <img class='profile-pic' src={{ glamember.photo.url }} />
+  <div class="col-md-2 col-sm-12 d-flex justify-content-center" style="background:blue;">
+    <div class="image-cropper">
+      <img src='{{ glamember.photo.url }}' alt="avatar" class="profile-pic">
+    </div>
+  </div>
+  <div class="col-md-9 offset-md-1" style="background:pink;">
+    <div class="row no-gutters">
+      <div class="col-sm-12">
+        <h4>{{ glamember.name}}</h4>
+      </div>
+    </div>
+    <div class="row no-gutters">
+      <div class="col-sm-12">
+        <p><b>@</b>{{ glamember.username }}</p>
+      </div>
+    </div>
+    <div class="row no-gutters">
+      <div class="col-md-6">
+        <p><b>Gender : </b>{{ glamember.gender }}</p>
+      </div>
+      <div class="col-md-6">
+        <p><b>DOB : </b>{{ glamember.dob }}</p>
+      </div>
+    </div>
+    <div class="row no-gutters">
+      <div class="col-md-6">
+        <p><b>Email : </b>{{ glamember.email }}</p>
+      </div>
+      <div class="col-md-6">
+        <p><b>Phone :</b>{{ glamember.phone }}</p>
+      </div>
+      <div class="col-md-6">
+        <p><b>From : </b>{{ glamember.city }},{{ glamember.state }}</p>
+      </div>
+      <div class="col-md-6">
+        <p><b>Course : </b>{{ glamember.course }},{{ glamember.branch }} <i>({{ glamember.year }})</i></p>
+      </div>
+      <div class="col-md-6">
+        <p><b>Member since : </b>{{ glamember.joined_in }}</p>
+      </div>
+      <div class="col-md-6">
+        <p><b>Working days :</b>
+          {% for day in glamember.preferred_days.all %}
+            <i>{{ day }}</i>
+          {% endfor %}
+        </p>
+      </div>
+      <div class="col-md-6">
+        <p><b>Total working days : </b>{{ glamember.working_days }}</p>
+      </div>
+    </div>
   </div>
 </div>
+
+<hr>
+
+    <a class="btn btn-sm btn-success" href="{% url 'memberupdate' glamember %}">Update Profile</a>
+    <!-- <p><b>Roll No:</b>{{ glamember.rollno}}</p> -->
 {% endblock content %}

@@ -136,6 +136,10 @@ class GLAMember(models.Model):
 
   def get_absolute_url(self):
       return reverse('memberdetails', kwargs={'slug': self.username})
+
+  @property
+  def ismoderator(self):
+    return self.user.groups.filter(name='Moderators').exists()
   
   class Meta:
     verbose_name = 'GLA Member'

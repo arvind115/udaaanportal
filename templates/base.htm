@@ -16,14 +16,101 @@
   <script src="{% static 'js/BsMultiSelect.min.js' %}"></script>
 </head>
 <body>
-  {% include 'snippets/navbar.htm' %}
   
+  {% include 'snippets/navbar.htm' %}
   <div class="container-fluid">
     {% block content %}
     {% endblock content %}
   </div>
 
 <style>
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&family=Roboto+Mono&display=swap');
+
+body{ font-family: 'Roboto Mono', monospace; font-size: 16px; line-height:1.4; width: 100%; height: 100%; margin: 0; font-weight: 400;
+	-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; word-wrap: break-word; 
+	color: #000; background: #fff;}
+
+p { line-height: inherit; font-size: inherit; font-weight: inherit; color: #000; }
+
+h1,h2,h3,h4,h5,h6{
+  font-family: 'Open Sans', sans-serif;
+  line-height: 1.5; font-weight: inherit;
+}
+
+a:hover{ text-decoration: none;}
+
+.blue-link{
+  color:#0366d6;
+  font-size:12px;
+  font-weight:600;
+}
+
+/* Navbar */
+
+.navbar .navbar-brand img{ 
+  width:auto;
+  height: 36px;
+  }
+
+/* Navbar */
+
+/* Login Form  */
+
+.form-wrapper{
+  background-color: #ffff;
+  box-sizing: border-box;
+  border: 1px solid rgb(118,118,118);
+  border-radius: 6px;
+  /* position: absolute;
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-50%); */
+  margin:20px 55px;
+  padding:15px;
+}
+
+/* Login Form  */
+
+/* MemberDetails */
+
+.underline{
+  position: relative;
+  height:42px;
+  margin:10px 0px;
+  /* background-color:yellow; */
+}
+
+h3::after{
+  position: absolute;
+  top:38px;
+  left:0px;
+  content:'';
+  background-color: seagreen;
+  width:60%;
+  height:6px;
+  border-radius: 3px;
+
+}
+
+.image-cropper {
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+    background-color: red;
+    border-radius: 50%;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.image-cropper .profile-pic {
+   background-color:pink;
+   width: 100%;
+   height: 100%;
+} 
+
+/* MemberDetails */
+
 select,select:valid{
   background-color: white;
   cursor:pointer;
@@ -66,7 +153,9 @@ input,select{
 }
 
 .inputDiv input:focus+label,
+.inputDiv input:hover+label,
 .inputDiv input:not(:placeholder-shown)+label,
+select:hover+label,
 select:valid+label, select:focus+label,
 .dashboardcode-bsmultiselect+label{
   opacity:1;
@@ -159,13 +248,37 @@ input[type='file']:valid+label.btn-2::after, input[type='file']:hover+label.btn-
   font-size: 12px;
 }
 
+input{
+  background-color: white;
+}
 
 /* MEDIA QUERIES */
 
 @media only screen and (max-width: 600px) {
+  p{
+    font-size: 16px;
+    line-height: 1.55;
+    /* word-spacing: 3px; */
+    padding:5px 0px;
+    font-weight: normal;
+  }
+
   input{ /*to remove grey background in Android Chrome */
     background-color: white !important;
   }
+
+/* Login Form  */
+
+.form-wrapper{
+  margin:0px;
+  padding:15px 0px 25px 0px;
+}
+
+/* Login Form  */
+
+
+
+
 }
 
 </style>

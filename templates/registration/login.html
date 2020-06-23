@@ -1,33 +1,45 @@
 {% extends 'base.htm' %}
 
 {% block content %}
-<div class="row no-gutters justify-content-center align-items-center">
-  <div class="col-md-4 col-sm-12">
-    <form method="post">{% csrf_token %}
-      {% for field in form %}
-        <div class="form-row">
-          <div class="col-md-12">
-            <div class="inputDiv">
-              {{ field }}
-              {{ field.label_tag }}
-              {% if field.help_text %}
-                <small style="color:grey">{{ field.help_text }}</small>
-              {% endif %}
-              {% for error in field.errors %}
-                <p style="color:red">{{ error }}</p>
-              {% endfor %}
+{% comment %} <form method='post'>{% csrf_token %}{{ form.as_p }}<input type='submit' value='login' /></form> {% endcomment %}
+<div class="row no-gutters justify-content-center align-items-center" style='background:none;'>
+  <div class="col-md-4 col-sm-12" style='background:none;'>
+    <div class='form-wrapper'>
+      <form method="post">{% csrf_token %}
+        {% for field in form %}
+          <div class="form-row">
+            <div class="col-md-12">
+              <div class="inputDiv">
+                {{ field }}
+                {{ field.label_tag }}
+                {% if field.help_text %}
+                  <small style="color:grey">{{ field.help_text }}</small>
+                {% endif %}
+              </div>
             </div>
           </div>
-        </div>
-      {% endfor %}
-      <div class="row no-gutters" style="background-color: none;">
-        <div class="col-md-12">
-          <div class="inputDiv">
-            <button type="submit" class="btn btn-sm btn-success login">Log in</button>
+        {% endfor %}
+        <div class="row no-gutters" style="background-color: none;">
+          <div class='col-sm-12 text-right'>
+            <a href='#' class='blue-link' style='padding-right:15px;'>Forgot password?</a>
           </div>
-        </div>
+          {% if form.non_field_errors %}
+            <div class='col-sm-12'>
+              <div class="inputDiv">
+                {% for err in form.non_field_errors %}
+                  <p style="color:red"><small>{{ err }}</small></p>
+                {% endfor %}
+              </div>
+            </div>
+          {% endif %}
+          <div class="col-md-12">
+            <div class="inputDiv">
+              <button type="submit" class="btn btn-sm btn-success login">Log in</button>
+            </div>
+          </div>
       </div>
     </form>
   </div>
+</div>
 </div>
 {% endblock content %}
