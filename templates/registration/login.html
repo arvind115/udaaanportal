@@ -21,7 +21,7 @@
         {% endfor %}
         <div class="row no-gutters" style="background-color: none;">
           <div class='col-sm-12 text-right'>
-            <a href='#' class='blue-link' style='padding-right:15px;'>Forgot password?</a>
+            <a href='{% url "passwordreset" %}' class='blue-link' style='padding-right:15px;'>Forgot password?</a>
           </div>
           {% if form.non_field_errors %}
             <div class='col-sm-12'>
@@ -38,8 +38,11 @@
             </div>
           </div>
       </div>
-    </form>
+      </form>
+      <div class="inputDiv">
+        <small>Don't have an account? <a href='{% url "register" %}'>Sign Up</a></small>
+      </div>
+    </div>
   </div>
-</div>
 </div>
 {% endblock content %}
