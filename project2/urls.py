@@ -19,16 +19,16 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 from django.contrib.auth import views as auth_views
-from django.contrib.auth.views import LoginView
 
-from .views import home,registerview, logoutview
+from .views import home,registerview, activate, logoutview
 from attendance.views import AttendanceCreate
 from members.views import MemberCreateView,MemberUpdateView, load_branches, load_cities, MemberDetails
 
 urlpatterns = [
     path('',home,name='home'),
-    path('login', LoginView.as_view(), {'template_name': 'login.htm'}, name='login'),
+    path('login', auth_views.LoginView.as_view(), {'template_name': 'login.htm'}, name='login'),
     path('register',registerview,name='register'),
+    path('activate/<uidb64>/<token>/',activate,name='activate'),
     path('logout',logoutview,name='logout'),
 
     path('membercreate',MemberCreateView.as_view(),name='membercreate'),

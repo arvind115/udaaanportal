@@ -2,32 +2,36 @@
 
 {% block content %}
 <div class="row no-gutters justify-content-center align-items-center">
-  <div class="col-md-4 col-sm-12">
-    <form method="post">{% csrf_token %}
-      {% for field in form %}
+  <div class="col-md-5 col-sm-12" style="background-color: pink;">
+    <div class="form-wrapper">
+      <form method="post">{% csrf_token %}
+        {% for field in form %}
+          <div class="form-row">
+            <div class="col-sm-12">
+              <div class="inputDiv">
+                {{ field }}
+                {{ field.label_tag }}
+                {% if field.help_text %}
+                  <small style="color:grey">{{ field.help_text }}</small>
+                {% endif %}
+                {% for error in field.errors %}
+                  <p style="color:red"><small>{{ error }}</small</p>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        {% endfor %}
         <div class="form-row">
           <div class="col-md-12">
             <div class="inputDiv">
-              {{ field }}
-              {{ field.label_tag }}
-              {% if field.help_text %}
-                <small style="color:grey">{{ field.help_text }}</small>
-              {% endif %}
-              {% for error in field.errors %}
-                <p style="color:red"><small>{{ error }}</small</p>
-              {% endfor %}
+              <button type="submit" class="btn btn-sm btn-success login">Sign up</button>
             </div>
           </div>
         </div>
-      {% endfor %}
-      <div class="form-row no-gutters" style="background-color: pink;">
-        <div class="col-md-12 d-flex justify-content-center">
-          <button type="submit" class="btn btn-sm btn-success">Sign up</button>
-        </div>
+      </form>
+      <div class="inputDiv">
+        <small>Have an existing account? <a href='{% url "login" %}'>Log in</a></small>
       </div>
-    </form>
-    <div class="inputDiv">
-      <small>Have an existing account? <a href='{% url "login" %}'>Log in</a></small>
     </div>
   </div>
 </div>

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 from django.urls import reverse_lazy
+# from django.contrib.auth.models import User
 
 import os
 
@@ -88,6 +89,11 @@ DATABASES = {
     }
 }
 
+# Authentication Backend
+# AUTH_USER_MODEL = User
+# AUTHENTICATION_BACKENDS = (
+#     'django.contrib.auth.backends.ModelBackend'
+# )
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -144,4 +150,4 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'samratarvind114@gmail.com'
-EMAIL_HOST_PASSWORD = '########'
+EMAIL_HOST_PASSWORD = '007honey'
