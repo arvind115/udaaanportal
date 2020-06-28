@@ -3,8 +3,6 @@ from django.shortcuts import render,redirect
 from django.contrib.auth import login,authenticate,logout
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from django.urls import reverse_lazy
-
 
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
@@ -46,6 +44,8 @@ def logoutview(request,*args,**kwargs):
 #   })
 
 def registerview(request):
+    if request.user.is_authenticated:
+        return redirect('home')
     if request.method == 'POST':
         form = SignupForm(request.POST)
         if form.is_valid():

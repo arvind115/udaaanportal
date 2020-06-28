@@ -1,9 +1,12 @@
 {% extends 'base.htm' %}
+{% load static %}
 
 {% block content %}
-{% comment %} <form method='post'>{% csrf_token %}{{ form.as_p }}<input type='submit' value='login' /></form> {% endcomment %}
 <div class="row no-gutters justify-content-center align-items-center" style='background:none;'>
   <div class="col-md-4 col-sm-12" style='background:none;'>
+    <div class='d-flex justify-content-center'>
+      <img src='{% static "img/logowhite.jpg" %}' class='img-fluid' alt='Udaaan' style='height:120px;'>
+    </div>
     <div class='form-wrapper'>
       <form method="post">{% csrf_token %}
         {% for field in form %}
