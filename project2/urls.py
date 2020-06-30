@@ -23,6 +23,7 @@ from django.contrib.auth import views as auth_views
 from .views import home,registerview, activate, logoutview
 from attendance.views import AttendanceCreate, AttendanceDetails
 from members.views import MemberCreateView,MemberUpdateView, load_branches, load_cities, MemberDetails
+from analytics.views import AnalyticsView
 
 urlpatterns = [
     path('',home,name='home'),
@@ -38,10 +39,10 @@ urlpatterns = [
     path('doesnotmatter', load_branches, name='ajax_load_branches'),
     path('doesnotmatter2', load_cities, name='ajax_load_cities'),
 
-    re_path(r'^attendancecreate$',AttendanceCreate.as_view(),name='attendancecreate'),
-    # path('attendancedetails/<int:year>/<int:month>/<int:day>',AttendanceDetails.as_view(),name='attendancedetails'),
-    # re_path(r'^attendancedetails/(?P<slug>[0-9]{4}/[0-9]{2}/[0-9]{2})/$',AttendanceDetails.as_view(),name='attendancedetails'),
+    path('attendancecreate',AttendanceCreate.as_view(),name='attendancecreate'),
     path('attendancedetails/<slug:slug>',AttendanceDetails.as_view(),name='attendancedetails'),
+
+    path('analytics',AnalyticsView.as_view(),name='analytics'),
 
     path('admin/', admin.site.urls),
     path('passwordreset',auth_views.PasswordResetView.as_view(

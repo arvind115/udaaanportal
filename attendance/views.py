@@ -6,13 +6,10 @@ from django.views.generic.detail import DetailView
 from datetime import datetime as dt
 
 from members.models import Day
-from .models import Attendance
 
+from .models import Attendance
 from .forms import AttendanceForm
 
-DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
-
-# Create your views here.
 class AttendanceCreate(LoginRequiredMixin,PermissionRequiredMixin,CreateView):
   login_url = reverse_lazy('login')
   permission_required = ('attendance.add_attendance')
@@ -31,7 +28,7 @@ class AttendanceCreate(LoginRequiredMixin,PermissionRequiredMixin,CreateView):
 
   def get_form(self,*args,**kwargs):
     form = super().get_form(*args,**kwargs)
-    members = Day.objects.filter(day=DAYS[dt.now().weekday()]).first().glamember_set.all().order_by('year') 
+    members = Day.objects.filter(day=dt.today().strftime("%A")).first().glamember_set.all().order_by('year') 
     form.fields['members'].queryset = members
     return form
 

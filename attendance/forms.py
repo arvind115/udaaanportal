@@ -11,5 +11,4 @@ class AttendanceForm(forms.ModelForm):
 
   class Meta:
     model = Attendance
-    # fields = ('members') #datetime field should be handled in GET & POST
     fields = ('members',)

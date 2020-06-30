@@ -10,4 +10,5 @@
 
 # Add AJAX
 
+# Add custom templates for 404,500 etc.
 
