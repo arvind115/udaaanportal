@@ -1,0 +1,10 @@
+{% extends 'base.htm' %}
+{% block content %}
+
+{{ attendance }}
+
+{% for member in attendance.members.all %}
+  {{ member }}
+{% endfor %}
+
+{% endblock content %}
