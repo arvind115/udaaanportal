@@ -4,7 +4,7 @@ from django.contrib import admin
 from .models import Attendance
 
 class AttendanceAdmin(admin.ModelAdmin):
-  list_display = ['datetime']
+  list_display = ['datetime','slug']
   # readonly_fields = ('datetime',)
 
   def members(self,obj):

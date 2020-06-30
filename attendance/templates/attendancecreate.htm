@@ -1,56 +1,54 @@
 {% extends 'base.htm' %}
 
 {% block content %}
-<form method="POST" class="form-control">{% csrf_token %}
-   <!-- {{ form.day.label }}
-   {{ form.day }} -->
-   {{ form.datetime.label }}
-   {{ form.datetime }}
-   {{ form.members.label }}
-   <!-- {{ form.members }} -->
-   <div class="form-row">
-      <div class="col-md-10 offset-md-1 col-sm-12">
-         <div class="table-responsive-sm">
-            <table class="table table-sm table-striped table-hover">
-               <thead class="thead-dark">
-               <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Name</th>
-                  <th scope="col">Course</th>
-                  <th scope="col">Branch</th>
-                  <th scope="col">Year</th>
-               </tr>
-               </thead>
-               <tbody>
-                  {% for member in form.fields.members.choices.queryset %}
-                  <tr>
-                     <th scope="row">{{ forloop.counter }}</th>
-                     <td>
-                        <div class="custom-control custom-checkbox">
-                           <input type="checkbox" name="members" value='{{ member.id }}' class="custom-control-input" id='{{ member.id }}'>
-                           <label for='{{ member.id }}' class="custom-control-label">{{ member.name }} </label>
-                        </div>
-                     </td>
-                     <td> {{ member.course }} </td>
-                     <td> {{ member.branch }} </td>
-                     <td> {{ member.year }} </td>
-                  </tr>
-               {% endfor %}
-               </tbody>
-            </table>
+<div class='row no-gutters'>
+   <div class='col-sm-12'>
+      <form method="POST">{% csrf_token %}
+         <div class="form-row no-gutters">
+            <div class="col-md-10 offset-md-1 col-sm-12">
+               <div class="table-responsive-sm">
+                  <table class="table table-sm table-striped table-hover">
+                     <thead class="thead-dark">
+                        <tr>
+                           <th scope="col">#</th>
+                           <th scope="col">Name</th>
+                           <th scope="col">Course</th>
+                           <th scope="col">Branch</th>
+                           <th scope="col">Year</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        {% for member in form.fields.members.choices.queryset %}
+                        <tr>
+                           <th scope="row">{{ forloop.counter }}</th>
+                           <td>
+                              <div class="custom-control custom-checkbox">
+                                 <input type="checkbox" name="members" value='{{ member.id }}' class="custom-control-input" id='{{ member.id }}'>
+                                 <label for='{{ member.id }}' class="custom-control-label">{{ member.name }} </label>
+                              </div>
+                           </td>
+                           <td> {{ member.course }} </td>
+                           <td> {{ member.branch }} </td>
+                           <td> {{ member.year }} </td>
+                        </tr>
+                     {% endfor %}
+                     </tbody>
+                  </table>
+               </div>
+            </div>
          </div>
-      </div>
+         <div class="form-row no-gutters">
+            <div class="col-md-10 offset-md-1 col-sm-12">
+               <button type="submit" class="btn btn-sm btn-success form-control">Upload Attendance</button>
+            </div>
+         </div>
+         <!-- <ul>
+            {% for member in form.members %}
+               {{ member }}, id = <b>{{ member.id_for_label }}</b>, text = {{ member.choice_label }}, pk = {{ member.name }}
+            {% endfor %}
+         </ul> -->
+      </form>
    </div>
-   <div class="form-row">
-      <div class="col-md-10 offset-md-1 col-sm-12">
-         <button type="submit" class="btn btn-sm btn-success form-control">Upload Attendance</button>
-      </div>
-   </div>
-   <!-- <ul>
-      {% for member in form.members %}
-         {{ member }}, id = <b>{{ member.id_for_label }}</b>, text = {{ member.choice_label }}, pk = {{ member.name }}
-      {% endfor %}
-   </ul> -->
-</form>
+</div>
 
 {% endblock content %}

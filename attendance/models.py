@@ -1,7 +1,8 @@
 from django.db import models
 from django.db.models.signals import post_save, m2m_changed
-from django.db import transaction
-
+from django.urls import reverse
+from django.utils import timezone
+from django.utils.text import slugify
 
 from members.models import GLAMember,Day
 
@@ -44,13 +45,22 @@ class AttendanceManager(models.Manager):
 
 class Attendance(models.Model):
   # day = models.ForeignKey(Day, on_delete=models.CASCADE,null=True)
+  slug = models.SlugField(max_length=10,null=True,blank=True,default='some date')
   members = models.ManyToManyField(GLAMember)
   datetime = models.DateTimeField(auto_now=False,null=True)
 
   objects = AttendanceManager()
 
-  # def __str__(self):
-  #   return self.datetime.strftime("%m/%d/%y, %H:%M:%S")
+  def __str__(self):
+    # return self.slug
+    DATE_FORMAT = "%Y/%m/%d"
+    TIME_FORMAT = '%H:%M:%S'
+    return self.datetime.strftime("%s %s" % (DATE_FORMAT, TIME_FORMAT))
+    # return self.datetime.strftime('%s'%(DATE_FORMAT))
+
+  def get_absolute_url(self):
+      return reverse('attendancedetails', kwargs={'slug': self.slug })
+      # return reverse('attendancedetails', kwargs={'year': self.datetime.year,'month':self.datetime.month,'day':self.datetime.day})
 
 
 def update_working_days(sender, instance, action, reverse, *args, **kwargs):
@@ -59,4 +69,13 @@ def update_working_days(sender, instance, action, reverse, *args, **kwargs):
           e.working_days += 1
           e.save()
 m2m_changed.connect(update_working_days, sender=Attendance.members.through)
+
+def sets_datetime(sender,instance,created,*args,**kwargs):
+  if created:
+    DATE_FORMAT = "%Y-%b-%d"
+    instance.datetime = timezone.now()
+    instance.slug = instance.datetime.strftime('%s'%(DATE_FORMAT))
+    instance.save()
+  
+post_save.connect(sets_datetime,sender=Attendance)
 

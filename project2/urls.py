@@ -14,14 +14,14 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path,reverse_lazy
+from django.urls import path,re_path, reverse_lazy
 from django.conf.urls.static import static
 from django.conf import settings
 
 from django.contrib.auth import views as auth_views
 
 from .views import home,registerview, activate, logoutview
-from attendance.views import AttendanceCreate
+from attendance.views import AttendanceCreate, AttendanceDetails
 from members.views import MemberCreateView,MemberUpdateView, load_branches, load_cities, MemberDetails
 
 urlpatterns = [
@@ -38,7 +38,10 @@ urlpatterns = [
     path('doesnotmatter', load_branches, name='ajax_load_branches'),
     path('doesnotmatter2', load_cities, name='ajax_load_cities'),
 
-    path('attendancecreate',AttendanceCreate.as_view(),name='attendancecreate'),
+    re_path(r'^attendancecreate$',AttendanceCreate.as_view(),name='attendancecreate'),
+    # path('attendancedetails/<int:year>/<int:month>/<int:day>',AttendanceDetails.as_view(),name='attendancedetails'),
+    # re_path(r'^attendancedetails/(?P<slug>[0-9]{4}/[0-9]{2}/[0-9]{2})/$',AttendanceDetails.as_view(),name='attendancedetails'),
+    path('attendancedetails/<slug:slug>',AttendanceDetails.as_view(),name='attendancedetails'),
 
     path('admin/', admin.site.urls),
     path('passwordreset',auth_views.PasswordResetView.as_view(
